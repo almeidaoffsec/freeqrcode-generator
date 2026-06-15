@@ -1740,6 +1740,16 @@ document.querySelectorAll("[id^='qrField-']").forEach((el) => {
 
 document.getElementById("qrField-text-content")?.addEventListener("input", updateTextCharCounter);
 
+const frameTextCharCounter = document.getElementById("frameTextCharCounter");
+const updateFrameTextCharCounter = () => {
+  if (!frameTextCharCounter || !frameTextInput) return;
+  const count = frameTextInput.value.length;
+  frameTextCharCounter.textContent = `${count}/50`;
+  frameTextCharCounter.className = `text-xs text-right tabular-nums ${count >= 50 ? "text-rose-500 font-medium" : count >= 40 ? "text-amber-500" : "text-zinc-400"}`;
+};
+
+frameTextInput?.addEventListener("input", updateFrameTextCharCounter);
+
 if (frameEnabledInput) {
   frameEnabledInput.addEventListener("change", () => {
     frameOptions?.classList.toggle("hidden", !frameEnabledInput.checked);
