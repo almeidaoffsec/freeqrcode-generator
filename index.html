@@ -280,19 +280,125 @@
       <section class="grid gap-6 lg:grid-cols-[380px_1fr]">
         <div class="space-y-5 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm sm:p-6">
           <div class="space-y-2">
-            <label
-              for="qrContent"
-              data-i18n="contentLabel"
-              class="block text-sm font-medium text-zinc-700"
-              >Conteúdo</label
-            >
-            <input
-              id="qrContent"
-              type="text"
-              placeholder="https://seusite.com"
-              data-i18n-placeholder="contentPlaceholder"
-              class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"
-            />
+            <label data-i18n="typeLabel" class="block text-sm font-medium text-zinc-700">Tipo</label>
+            <div id="qrTypeTabs" class="flex flex-wrap gap-1.5">
+              <button type="button" data-qr-type="link" class="qr-type-tab rounded-md border border-zinc-900 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-zinc-700" data-i18n="typeLink">Link</button>
+              <button type="button" data-qr-type="text" class="qr-type-tab rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100" data-i18n="typeText">Texto</button>
+              <button type="button" data-qr-type="email" class="qr-type-tab rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100" data-i18n="typeEmail">E-mail</button>
+              <button type="button" data-qr-type="call" class="qr-type-tab rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100" data-i18n="typeCall">Chamada</button>
+              <button type="button" data-qr-type="whatsapp" class="qr-type-tab rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100">WhatsApp</button>
+              <button type="button" data-qr-type="vcard" class="qr-type-tab rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100">V-Card</button>
+              <button type="button" data-qr-type="wifi" class="qr-type-tab rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100">Wi-Fi</button>
+            </div>
+          </div>
+
+          <!-- Link Panel -->
+          <div id="qrTypePanel-link" class="qr-type-panel space-y-1.5">
+            <label for="qrField-link-url" data-i18n="fieldUrl" class="block text-sm font-medium text-zinc-700">URL</label>
+            <input id="qrField-link-url" type="url" data-i18n-placeholder="placeholderUrl" placeholder="https://seusite.com" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+          </div>
+
+          <!-- Text Panel -->
+          <div id="qrTypePanel-text" class="qr-type-panel hidden space-y-1.5">
+            <label for="qrField-text-content" data-i18n="fieldText" class="block text-sm font-medium text-zinc-700">Texto</label>
+            <textarea id="qrField-text-content" rows="4" maxlength="500" data-i18n-placeholder="placeholderText" placeholder="Seu texto aqui..." class="w-full resize-none rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"></textarea>
+            <p id="textCharCounter" class="text-xs text-right tabular-nums text-zinc-400">0/500</p>
+          </div>
+
+          <!-- Email Panel -->
+          <div id="qrTypePanel-email" class="qr-type-panel hidden space-y-2">
+            <div class="space-y-1.5">
+              <label for="qrField-email-to" data-i18n="fieldEmailTo" class="block text-sm font-medium text-zinc-700">E-mail</label>
+              <input id="qrField-email-to" type="email" data-i18n-placeholder="placeholderEmailTo" placeholder="email@exemplo.com" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            </div>
+            <div class="space-y-1.5">
+              <label for="qrField-email-subject" data-i18n="fieldSubject" class="block text-sm font-medium text-zinc-700">Assunto</label>
+              <input id="qrField-email-subject" type="text" data-i18n-placeholder="placeholderSubject" placeholder="Assunto" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            </div>
+            <div class="space-y-1.5">
+              <label for="qrField-email-body" data-i18n="fieldMessage" class="block text-sm font-medium text-zinc-700">Mensagem</label>
+              <textarea id="qrField-email-body" rows="3" data-i18n-placeholder="placeholderMessage" placeholder="Sua mensagem..." class="w-full resize-none rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"></textarea>
+            </div>
+          </div>
+
+          <!-- Call Panel -->
+          <div id="qrTypePanel-call" class="qr-type-panel hidden space-y-2">
+            <div class="space-y-1.5">
+              <label data-i18n="fieldCountryCode" class="block text-sm font-medium text-zinc-700">País (DDI)</label>
+              <select id="qrField-call-code" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"></select>
+            </div>
+            <div class="space-y-1.5">
+              <label for="qrField-call-number" data-i18n="fieldPhone" class="block text-sm font-medium text-zinc-700">Número</label>
+              <input id="qrField-call-number" type="tel" data-i18n-placeholder="placeholderPhone" placeholder="11999999999" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            </div>
+          </div>
+
+          <!-- WhatsApp Panel -->
+          <div id="qrTypePanel-whatsapp" class="qr-type-panel hidden space-y-2">
+            <div class="space-y-1.5">
+              <label data-i18n="fieldCountryCode" class="block text-sm font-medium text-zinc-700">País (DDI)</label>
+              <select id="qrField-whatsapp-code" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"></select>
+            </div>
+            <div class="space-y-1.5">
+              <label for="qrField-whatsapp-number" data-i18n="fieldPhone" class="block text-sm font-medium text-zinc-700">Número</label>
+              <input id="qrField-whatsapp-number" type="tel" data-i18n-placeholder="placeholderPhone" placeholder="11999999999" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            </div>
+            <div class="space-y-1.5">
+              <label for="qrField-whatsapp-message" data-i18n="fieldMessage" class="block text-sm font-medium text-zinc-700">Mensagem</label>
+              <textarea id="qrField-whatsapp-message" rows="3" data-i18n-placeholder="placeholderMessage" placeholder="Sua mensagem..." class="w-full resize-none rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"></textarea>
+            </div>
+          </div>
+
+          <!-- VCard Panel -->
+          <div id="qrTypePanel-vcard" class="qr-type-panel hidden space-y-2">
+            <div class="grid grid-cols-2 gap-2">
+              <div class="space-y-1">
+                <label for="qrField-vcard-firstname" data-i18n="fieldFirstName" class="block text-xs font-medium text-zinc-600">Nome</label>
+                <input id="qrField-vcard-firstname" type="text" data-i18n-placeholder="placeholderFirstName" placeholder="João" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+              </div>
+              <div class="space-y-1">
+                <label for="qrField-vcard-lastname" data-i18n="fieldLastName" class="block text-xs font-medium text-zinc-600">Sobrenome</label>
+                <input id="qrField-vcard-lastname" type="text" data-i18n-placeholder="placeholderLastName" placeholder="Silva" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+              </div>
+            </div>
+            <select id="qrField-vcard-phone-code" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"></select>
+            <input id="qrField-vcard-phone-number" type="tel" data-i18n-placeholder="placeholderPhone" placeholder="11999999999" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            <input id="qrField-vcard-email" type="email" data-i18n-placeholder="placeholderEmailTo" placeholder="email@exemplo.com" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            <div class="grid grid-cols-2 gap-2">
+              <input id="qrField-vcard-org" type="text" data-i18n-placeholder="placeholderOrg" placeholder="Empresa Ltda." class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+              <input id="qrField-vcard-jobtitle" type="text" data-i18n-placeholder="placeholderJobTitle" placeholder="CEO" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            </div>
+            <input id="qrField-vcard-url" type="url" data-i18n-placeholder="placeholderWebsite" placeholder="https://empresa.com" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            <input id="qrField-vcard-street" type="text" data-i18n-placeholder="placeholderStreet" placeholder="Rua Exemplo, 123" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            <div class="grid grid-cols-[1fr_5rem_3.5rem] gap-2">
+              <input id="qrField-vcard-city" type="text" data-i18n-placeholder="placeholderCity" placeholder="São Paulo" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+              <input id="qrField-vcard-zip" type="text" data-i18n-placeholder="placeholderZip" placeholder="01310-100" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+              <input id="qrField-vcard-country" type="text" data-i18n-placeholder="placeholderCountry" placeholder="BR" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            </div>
+          </div>
+
+          <!-- Wi-Fi Panel -->
+          <div id="qrTypePanel-wifi" class="qr-type-panel hidden space-y-2">
+            <div class="space-y-1.5">
+              <label for="qrField-wifi-ssid" data-i18n="fieldSsid" class="block text-sm font-medium text-zinc-700">Nome da rede</label>
+              <input id="qrField-wifi-ssid" type="text" data-i18n-placeholder="placeholderSsid" placeholder="MinhaRede" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            </div>
+            <div class="space-y-1.5">
+              <label for="qrField-wifi-encryption" data-i18n="fieldEncryption" class="block text-sm font-medium text-zinc-700">Criptografia</label>
+              <select id="qrField-wifi-encryption" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500">
+                <option value="WPA">WPA / WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass" data-i18n="encryptionNone">Sem criptografia</option>
+              </select>
+            </div>
+            <div id="wifiPasswordGroup" class="space-y-1.5">
+              <label for="qrField-wifi-password" data-i18n="fieldPassword" class="block text-sm font-medium text-zinc-700">Senha</label>
+              <input id="qrField-wifi-password" type="password" data-i18n-placeholder="placeholderPassword" placeholder="Senha" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            </div>
+            <label class="flex cursor-pointer items-center gap-2">
+              <input id="qrField-wifi-hidden" type="checkbox" class="h-4 w-4 accent-zinc-900" />
+              <span data-i18n="fieldHidden" class="text-sm text-zinc-700">Rede oculta</span>
+            </label>
           </div>
 
           <div class="space-y-2">
@@ -388,6 +494,22 @@
                 class="h-10 w-full cursor-pointer rounded-md border border-zinc-300 bg-white p-1"
               />
             </div>
+          </div>
+
+          <div class="space-y-2">
+            <label
+              for="qrName"
+              data-i18n="qrNameLabel"
+              class="block text-sm font-medium text-zinc-700"
+              >Nome (opcional)</label
+            >
+            <input
+              id="qrName"
+              type="text"
+              data-i18n-placeholder="qrNamePlaceholder"
+              placeholder="Ex: Cardápio do restaurante"
+              class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"
+            />
           </div>
 
           <div class="grid gap-3 sm:grid-cols-2">

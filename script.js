@@ -1,4 +1,3 @@
-const qrContentInput = document.getElementById("qrContent");
 const logoInput = document.getElementById("logoInput");
 const logoFileName = document.getElementById("logoFileName");
 const logoScale = document.getElementById("logoScale");
@@ -25,13 +24,98 @@ const importHistoryButton = document.getElementById("importHistoryButton");
 const importFileInput = document.getElementById("importFileInput");
 const qrColorDark = document.getElementById("qrColorDark");
 const qrColorLight = document.getElementById("qrColorLight");
+const qrNameInput = document.getElementById("qrName");
+const textCharCounter = document.getElementById("textCharCounter");
 
 const LANGUAGE_STORAGE_KEY = "free-qrcode-language";
 const HISTORY_STORAGE_KEY = "free-qrcode-history";
 const LANGUAGE_QUERY_PARAM = "lang";
 const DEFAULT_LANGUAGE = "pt-BR";
 const DEFAULT_QR_SIZE = 512;
+const QR_TEXT_MAX_CHARS = 500;
 const APP_BASE_URL = "http://freeqrcode.rxmos.dev.br/";
+
+const QR_TYPE_PRIMARY_FIELD = {
+  link: "qrField-link-url",
+  text: "qrField-text-content",
+  email: "qrField-email-to",
+  call: "qrField-call-number",
+  whatsapp: "qrField-whatsapp-number",
+  vcard: "qrField-vcard-firstname",
+  wifi: "qrField-wifi-ssid",
+};
+
+const COUNTRY_CODES = [
+  ["Abkhazia", "7840"], ["Abkhazia", "7940"], ["Afghanistan", "93"], ["Albania", "355"],
+  ["Algeria", "213"], ["American Samoa", "1684"], ["Andorra", "376"], ["Angola", "244"],
+  ["Anguilla", "1264"], ["Antigua and Barbuda", "1268"], ["Argentina", "54"],
+  ["Armenia", "374"], ["Aruba", "297"], ["Ascension", "247"], ["Australia", "61"],
+  ["Australian External Territories", "672"], ["Austria", "43"], ["Azerbaijan", "994"],
+  ["Bahamas", "1242"], ["Bahrain", "973"], ["Bangladesh", "880"], ["Barbados", "1246"],
+  ["Barbuda", "1268"], ["Belarus", "375"], ["Belgium", "32"], ["Belize", "501"],
+  ["Benin", "229"], ["Bermuda", "1441"], ["Bhutan", "975"], ["Bolivia", "591"],
+  ["Bosnia and Herzegovina", "387"], ["Botswana", "267"], ["Brazil", "55"],
+  ["British Indian Ocean Territory", "246"], ["British Virgin Islands", "1284"],
+  ["Brunei", "673"], ["Bulgaria", "359"], ["Burkina Faso", "226"], ["Burundi", "257"],
+  ["Cambodia", "855"], ["Cameroon", "237"], ["Canada", "1"], ["Cape Verde", "238"],
+  ["Cayman Islands", "345"], ["Central African Republic", "236"], ["Chad", "235"],
+  ["Chile", "56"], ["China", "86"], ["Christmas Island", "61"], ["Cocos-Keeling Islands", "61"],
+  ["Colombia", "57"], ["Comoros", "269"], ["Congo", "242"], ["Congo (Zaire)", "243"],
+  ["Cook Islands", "682"], ["Costa Rica", "506"], ["Ivory Coast", "225"],
+  ["Croatia", "385"], ["Cuba", "53"], ["Curacao", "599"], ["Cyprus", "357"],
+  ["Czech Republic", "420"], ["Denmark", "45"], ["Diego Garcia", "246"],
+  ["Djibouti", "253"], ["Dominica", "1767"], ["Dominican Republic", "1809"],
+  ["Dominican Republic", "1829"], ["Dominican Republic", "1849"], ["East Timor", "670"],
+  ["Easter Island", "56"], ["Ecuador", "593"], ["Egypt", "20"], ["El Salvador", "503"],
+  ["Equatorial Guinea", "240"], ["Eritrea", "291"], ["Estonia", "372"],
+  ["Ethiopia", "251"], ["Falkland Islands", "500"], ["Faroe Islands", "298"],
+  ["Fiji", "679"], ["Finland", "358"], ["France", "33"], ["French Antilles", "596"],
+  ["French Guiana", "594"], ["French Polynesia", "689"], ["Gabon", "241"],
+  ["Gambia", "220"], ["Georgia", "995"], ["Germany", "49"], ["Ghana", "233"],
+  ["Gibraltar", "350"], ["Greece", "30"], ["Greenland", "299"], ["Grenada", "1473"],
+  ["Guadeloupe", "590"], ["Guam", "1671"], ["Guatemala", "502"], ["Guinea", "224"],
+  ["Guinea-Bissau", "245"], ["Guyana", "595"], ["Haiti", "509"], ["Honduras", "504"],
+  ["Hong Kong SAR China", "852"], ["Hungary", "36"], ["Iceland", "354"], ["India", "91"],
+  ["Indonesia", "62"], ["Iran", "98"], ["Iraq", "964"], ["Ireland", "353"],
+  ["Israel", "972"], ["Italy", "39"], ["Jamaica", "1876"], ["Japan", "81"],
+  ["Jordan", "962"], ["Kazakhstan", "77"], ["Kenya", "254"], ["Kiribati", "686"],
+  ["North Korea", "850"], ["South Korea", "82"], ["Kuwait", "965"],
+  ["Kyrgyzstan", "996"], ["Laos", "856"], ["Latvia", "371"], ["Lebanon", "961"],
+  ["Lesotho", "266"], ["Liberia", "231"], ["Libya", "218"], ["Liechtenstein", "423"],
+  ["Lithuania", "370"], ["Luxembourg", "352"], ["Macau SAR China", "853"],
+  ["Macedonia", "389"], ["Madagascar", "261"], ["Malawi", "265"], ["Malaysia", "60"],
+  ["Maldives", "960"], ["Mali", "223"], ["Malta", "356"], ["Marshall Islands", "692"],
+  ["Martinique", "596"], ["Mauritania", "222"], ["Mauritius", "230"],
+  ["Mayotte", "262"], ["Mexico", "52"], ["Micronesia", "691"], ["Midway Island", "1808"],
+  ["Moldova", "373"], ["Monaco", "377"], ["Mongolia", "976"], ["Montenegro", "382"],
+  ["Montserrat", "1664"], ["Morocco", "212"], ["Myanmar", "95"], ["Namibia", "264"],
+  ["Nauru", "674"], ["Nepal", "977"], ["Netherlands", "31"],
+  ["Netherlands Antilles", "599"], ["Nevis", "1869"], ["New Caledonia", "687"],
+  ["New Zealand", "64"], ["Nicaragua", "505"], ["Niger", "227"], ["Nigeria", "234"],
+  ["Niue", "683"], ["Norfolk Island", "672"], ["Northern Mariana Islands", "1670"],
+  ["Norway", "47"], ["Oman", "968"], ["Pakistan", "92"], ["Palau", "680"],
+  ["Palestinian Territory", "970"], ["Panama", "507"], ["Papua New Guinea", "675"],
+  ["Paraguay", "595"], ["Peru", "51"], ["Philippines", "63"], ["Poland", "48"],
+  ["Portugal", "351"], ["Puerto Rico", "1787"], ["Puerto Rico", "1939"],
+  ["Qatar", "974"], ["Reunion", "262"], ["Romania", "40"], ["Russia", "7"],
+  ["Rwanda", "250"], ["Samoa", "685"], ["San Marino", "378"], ["Saudi Arabia", "966"],
+  ["Senegal", "221"], ["Serbia", "381"], ["Seychelles", "248"],
+  ["Sierra Leone", "232"], ["Singapore", "65"], ["Slovakia", "421"],
+  ["Slovenia", "386"], ["Solomon Islands", "677"], ["South Africa", "27"],
+  ["South Georgia and S. Sandwich Islands", "500"], ["Spain", "34"],
+  ["Sri Lanka", "94"], ["Sudan", "249"], ["Suriname", "597"], ["Swaziland", "268"],
+  ["Sweden", "46"], ["Switzerland", "41"], ["Syria", "963"], ["Taiwan", "886"],
+  ["Tajikistan", "992"], ["Tanzania", "255"], ["Thailand", "66"],
+  ["Timor Leste", "670"], ["Togo", "228"], ["Tokelau", "690"], ["Tonga", "676"],
+  ["Trinidad and Tobago", "1868"], ["Tunisia", "216"], ["Turkey", "90"],
+  ["Turkmenistan", "993"], ["Turks and Caicos Islands", "1649"], ["Tuvalu", "688"],
+  ["Uganda", "256"], ["Ukraine", "380"], ["United Arab Emirates", "971"],
+  ["United Kingdom", "44"], ["United States", "1"], ["Uruguay", "598"],
+  ["U.S. Virgin Islands", "1340"], ["Uzbekistan", "998"], ["Vanuatu", "678"],
+  ["Venezuela", "58"], ["Vietnam", "84"], ["Wake Island", "1808"],
+  ["Wallis and Futuna", "681"], ["Yemen", "967"], ["Zambia", "260"],
+  ["Zanzibar", "255"], ["Zimbabwe", "263"],
+];
 
 const STATUS_STYLE_MAP = {
   info: "border-zinc-200 bg-zinc-50 text-zinc-700",
@@ -64,7 +148,7 @@ const TRANSLATIONS = {
       downloadButton: "Baixar PNG",
       previewBadge: "preview",
       cameraTip: "Dica: use URL completa com https:// para melhorar a leitura em aplicativos de câmera.",
-      footerText: "Made with luv by @yurirxmos",
+      footerText: "Made with luv by @yurirxmos · updated by @almeidaoffsec",
       qrColorDarkLabel: "Cor do QR",
       qrColorLightLabel: "Cor do fundo",
       historyPreview: "Preview",
@@ -79,11 +163,59 @@ const TRANSLATIONS = {
       historyImportButton: "Importar JSON",
       historyImportSuccess: "Importado com sucesso.",
       historyImportError: "Arquivo inválido.",
+      qrNameLabel: "Nome (opcional)",
+      qrNamePlaceholder: "Ex: Cardápio do restaurante",
+      typeLabel: "Tipo",
+      typeLink: "Link",
+      typeText: "Texto",
+      typeEmail: "E-mail",
+      typeCall: "Chamada",
+      fieldUrl: "URL",
+      fieldText: "Texto",
+      fieldEmailTo: "E-mail",
+      fieldSubject: "Assunto",
+      fieldMessage: "Mensagem",
+      fieldPhone: "Número",
+      fieldFirstName: "Nome",
+      fieldLastName: "Sobrenome",
+      fieldOrg: "Empresa",
+      fieldJobTitle: "Cargo",
+      fieldWebsite: "Site",
+      fieldStreet: "Rua",
+      fieldCity: "Cidade",
+      fieldZip: "CEP",
+      fieldCountry: "País",
+      fieldSsid: "Nome da rede",
+      fieldEncryption: "Criptografia",
+      fieldPassword: "Senha",
+      fieldHidden: "Rede oculta",
+      encryptionNone: "Sem criptografia",
+      fieldCountryCode: "País (DDI)",
+      countryCodePlaceholder: "Selecione o país...",
+      placeholderUrl: "https://seusite.com",
+      placeholderText: "Seu texto aqui...",
+      placeholderEmailTo: "email@exemplo.com",
+      placeholderSubject: "Assunto",
+      placeholderMessage: "Sua mensagem...",
+      placeholderCountryCode: "+55",
+      placeholderPhone: "11999999999",
+      placeholderFirstName: "João",
+      placeholderLastName: "Silva",
+      placeholderVcardPhone: "+55 11 99999-9999",
+      placeholderOrg: "Empresa Ltda.",
+      placeholderJobTitle: "CEO",
+      placeholderWebsite: "https://empresa.com",
+      placeholderStreet: "Rua Exemplo, 123",
+      placeholderCity: "São Paulo",
+      placeholderZip: "01310-100",
+      placeholderCountry: "BR",
+      placeholderSsid: "MinhaRede",
+      placeholderPassword: "Senha",
     },
     status: {
       initial: "Preencha os campos e clique em Gerar QR Code.",
       dirty: "Altere os campos e gere novamente para baixar.",
-      emptyContent: "Digite um texto ou URL para gerar o QR Code.",
+      emptyContent: "Preencha o campo obrigatório para gerar o QR Code.",
       generating: "Gerando QR Code...",
       generatedSuccess: "QR Code gerado com sucesso.",
       generateBeforeDownload: "Gere o QR Code antes de baixar.",
@@ -123,7 +255,7 @@ const TRANSLATIONS = {
       downloadButton: "Download PNG",
       previewBadge: "preview",
       cameraTip: "Tip: use a full URL with https:// to improve scanning on camera apps.",
-      footerText: "Made with luv by @yurirxmos",
+      footerText: "Made with luv by @yurirxmos · updated by @almeidaoffsec",
       qrColorDarkLabel: "QR color",
       qrColorLightLabel: "Background color",
       historyPreview: "Preview",
@@ -138,11 +270,59 @@ const TRANSLATIONS = {
       historyImportButton: "Import JSON",
       historyImportSuccess: "Imported successfully.",
       historyImportError: "Invalid file.",
+      qrNameLabel: "Name (optional)",
+      qrNamePlaceholder: "e.g.: Restaurant menu",
+      typeLabel: "Type",
+      typeLink: "Link",
+      typeText: "Text",
+      typeEmail: "Email",
+      typeCall: "Call",
+      fieldUrl: "URL",
+      fieldText: "Text",
+      fieldEmailTo: "Email",
+      fieldSubject: "Subject",
+      fieldMessage: "Message",
+      fieldPhone: "Number",
+      fieldFirstName: "First name",
+      fieldLastName: "Last name",
+      fieldOrg: "Organization",
+      fieldJobTitle: "Job title",
+      fieldWebsite: "Website",
+      fieldStreet: "Street",
+      fieldCity: "City",
+      fieldZip: "ZIP",
+      fieldCountry: "Country",
+      fieldSsid: "Network name",
+      fieldEncryption: "Encryption",
+      fieldPassword: "Password",
+      fieldHidden: "Hidden network",
+      encryptionNone: "No encryption",
+      fieldCountryCode: "Country (Code)",
+      countryCodePlaceholder: "Select country...",
+      placeholderUrl: "https://yourwebsite.com",
+      placeholderText: "Your text here...",
+      placeholderEmailTo: "email@example.com",
+      placeholderSubject: "Subject",
+      placeholderMessage: "Your message...",
+      placeholderCountryCode: "+1",
+      placeholderPhone: "5551234567",
+      placeholderFirstName: "John",
+      placeholderLastName: "Smith",
+      placeholderVcardPhone: "+1 555 123-4567",
+      placeholderOrg: "Company Inc.",
+      placeholderJobTitle: "CEO",
+      placeholderWebsite: "https://company.com",
+      placeholderStreet: "123 Example St",
+      placeholderCity: "New York",
+      placeholderZip: "10001",
+      placeholderCountry: "US",
+      placeholderSsid: "MyNetwork",
+      placeholderPassword: "Password",
     },
     status: {
       initial: "Fill in the fields and click Generate QR Code.",
       dirty: "Fields changed. Generate again before downloading.",
-      emptyContent: "Enter text or a URL to generate the QR Code.",
+      emptyContent: "Fill in the required field to generate the QR Code.",
       generating: "Generating QR Code...",
       generatedSuccess: "QR Code generated successfully.",
       generateBeforeDownload: "Generate the QR Code before downloading.",
@@ -181,7 +361,7 @@ const SEO_TRANSLATIONS = {
   },
 };
 
-const CONTROL_LIST = [qrContentInput, logoInput, logoScale, logoPadding].filter((element) => Boolean(element));
+const CONTROL_LIST = [logoInput, logoScale, logoPadding].filter((element) => Boolean(element));
 const QR_CODE_SCRIPT_SOURCES = [
   "https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js",
   "https://unpkg.com/qrcode@1.5.4/build/qrcode.min.js",
@@ -209,6 +389,7 @@ const state = {
   lastStatusKey: "initial",
   lastStatusType: "info",
   history: loadHistory(),
+  qrType: "link",
 };
 
 let qrCodeLibraryPromise = null;
@@ -629,8 +810,136 @@ const drawLogoOnCanvas = async ({ canvas, dataUrl, scalePercent, paddingPercent 
   context.restore();
 };
 
+const updateTextCharCounter = () => {
+  const textarea = document.getElementById("qrField-text-content");
+  if (!textarea || !textCharCounter) return;
+
+  const count = textarea.value.length;
+  const ratio = count / QR_TEXT_MAX_CHARS;
+
+  textCharCounter.textContent = `${count}/${QR_TEXT_MAX_CHARS}`;
+  textCharCounter.className = `text-xs text-right tabular-nums ${
+    ratio >= 1 ? "text-rose-500 font-medium" : ratio >= 0.8 ? "text-amber-500" : "text-zinc-400"
+  }`;
+};
+
+const getTypeLabel = (type) => {
+  const key = `type${type.charAt(0).toUpperCase()}${type.slice(1)}`;
+  return t("ui", key) || type;
+};
+
+const getFieldValue = (id) => document.getElementById(id)?.value?.trim() ?? "";
+
+const buildQrContent = () => {
+  const type = state.qrType;
+
+  switch (type) {
+    case "link":
+      return getFieldValue("qrField-link-url");
+
+    case "text":
+      return getFieldValue("qrField-text-content");
+
+    case "email": {
+      const to = getFieldValue("qrField-email-to");
+      const subject = getFieldValue("qrField-email-subject");
+      const body = getFieldValue("qrField-email-body");
+      let url = `mailto:${to}`;
+      const params = [];
+      if (subject) params.push(`subject=${encodeURIComponent(subject)}`);
+      if (body) params.push(`body=${encodeURIComponent(body)}`);
+      if (params.length) url += `?${params.join("&")}`;
+      return url;
+    }
+
+    case "call": {
+      const code = document.getElementById("qrField-call-code")?.value ?? "";
+      const number = getFieldValue("qrField-call-number").replace(/\D/g, "");
+      return `tel:${code ? `+${code}${number}` : number}`;
+    }
+
+    case "whatsapp": {
+      const code = document.getElementById("qrField-whatsapp-code")?.value ?? "";
+      const number = getFieldValue("qrField-whatsapp-number").replace(/\D/g, "");
+      const message = getFieldValue("qrField-whatsapp-message");
+      let url = `https://wa.me/${code}${number}`;
+      if (message) url += `?text=${encodeURIComponent(message)}`;
+      return url;
+    }
+
+    case "vcard": {
+      const firstName = getFieldValue("qrField-vcard-firstname");
+      const lastName = getFieldValue("qrField-vcard-lastname");
+      const phoneCode = document.getElementById("qrField-vcard-phone-code")?.value ?? "";
+      const phoneNumber = getFieldValue("qrField-vcard-phone-number").replace(/\D/g, "");
+      const phone = phoneNumber ? (phoneCode ? `+${phoneCode}${phoneNumber}` : phoneNumber) : "";
+      const email = getFieldValue("qrField-vcard-email");
+      const org = getFieldValue("qrField-vcard-org");
+      const jobTitle = getFieldValue("qrField-vcard-jobtitle");
+      const url = getFieldValue("qrField-vcard-url");
+      const street = getFieldValue("qrField-vcard-street");
+      const city = getFieldValue("qrField-vcard-city");
+      const zip = getFieldValue("qrField-vcard-zip");
+      const country = getFieldValue("qrField-vcard-country");
+
+      const lines = ["BEGIN:VCARD", "VERSION:3.0"];
+      lines.push(`N:${lastName};${firstName};;;`);
+      const fullName = [firstName, lastName].filter(Boolean).join(" ");
+      if (fullName) lines.push(`FN:${fullName}`);
+      if (phone) lines.push(`TEL:${phone}`);
+      if (email) lines.push(`EMAIL:${email}`);
+      if (org) lines.push(`ORG:${org}`);
+      if (jobTitle) lines.push(`TITLE:${jobTitle}`);
+      if (url) lines.push(`URL:${url}`);
+      if (street || city || zip || country) lines.push(`ADR:;;${street};${city};;${zip};${country}`);
+      lines.push("END:VCARD");
+      return lines.join("\n");
+    }
+
+    case "wifi": {
+      const ssid = getFieldValue("qrField-wifi-ssid");
+      const encryption = document.getElementById("qrField-wifi-encryption")?.value ?? "WPA";
+      const password = getFieldValue("qrField-wifi-password");
+      const hidden = document.getElementById("qrField-wifi-hidden")?.checked ?? false;
+      const esc = (s) => s.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/"/g, '\\"');
+      if (encryption === "nopass") return `WIFI:T:nopass;S:${esc(ssid)};H:${hidden};;`;
+      return `WIFI:T:${encryption};S:${esc(ssid)};P:${esc(password)};H:${hidden};;`;
+    }
+
+    default:
+      return "";
+  }
+};
+
+const setQrType = (type) => {
+  state.qrType = type;
+
+  document.querySelectorAll(".qr-type-tab").forEach((button) => {
+    const isActive = button.dataset.qrType === type;
+    button.classList.toggle("bg-zinc-900", isActive);
+    button.classList.toggle("text-white", isActive);
+    button.classList.toggle("border-zinc-900", isActive);
+    button.classList.toggle("bg-white", !isActive);
+    button.classList.toggle("text-zinc-700", !isActive);
+    button.classList.toggle("border-zinc-300", !isActive);
+  });
+
+  document.querySelectorAll(".qr-type-panel").forEach((panel) => {
+    panel.classList.toggle("hidden", panel.id !== `qrTypePanel-${type}`);
+  });
+
+  setDirtyState();
+};
+
 const generateQrCode = async () => {
-  const contentValue = qrContentInput.value.trim();
+  const primaryId = QR_TYPE_PRIMARY_FIELD[state.qrType];
+  const primaryEl = document.getElementById(primaryId);
+  if (!primaryEl || !primaryEl.value.trim()) {
+    setStatus("emptyContent", "error");
+    return;
+  }
+
+  const contentValue = buildQrContent();
   if (!contentValue) {
     setStatus("emptyContent", "error");
     return;
@@ -670,6 +979,8 @@ const generateQrCode = async () => {
     addToHistory({
       id: Date.now(),
       content: contentValue,
+      type: state.qrType,
+      name: qrNameInput?.value?.trim() || "",
       dataUrl: qrCanvas.toDataURL("image/png"),
       fileName: getDownloadFileName(),
     });
@@ -872,9 +1183,18 @@ const renderHistoryList = () => {
     const row = document.createElement("div");
     row.className = "flex items-center gap-3";
 
+    const contentWrapper = document.createElement("div");
+    contentWrapper.className = "min-w-0 flex-1 flex items-center gap-1.5 overflow-hidden";
+
+    const typeBadge = document.createElement("span");
+    typeBadge.textContent = getTypeLabel(entry.type || "link");
+    typeBadge.className = "shrink-0 rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-medium text-zinc-500";
+
     const contentEl = document.createElement("p");
-    contentEl.textContent = entry.content;
-    contentEl.className = "min-w-0 flex-1 truncate text-sm text-zinc-700";
+    contentEl.textContent = entry.name || entry.content;
+    contentEl.className = "min-w-0 truncate text-sm text-zinc-700";
+
+    contentWrapper.append(typeBadge, contentEl);
 
     const previewBtn = document.createElement("button");
     previewBtn.textContent = t("ui", "historyPreview");
@@ -908,7 +1228,7 @@ const renderHistoryList = () => {
       "shrink-0 rounded-md border border-rose-200 bg-white px-3 py-1.5 text-xs font-medium text-rose-600 transition hover:bg-rose-50";
     deleteBtn.addEventListener("click", () => deleteHistoryItem(entry.id));
 
-    row.append(contentEl, previewBtn, downloadBtn, deleteBtn);
+    row.append(contentWrapper, previewBtn, downloadBtn, deleteBtn);
     wrapper.append(row, previewPanel);
     historyList.append(wrapper);
   });
@@ -1008,4 +1328,61 @@ if (importFileInput) {
   });
 }
 
+document.querySelectorAll(".qr-type-tab").forEach((button) => {
+  button.addEventListener("click", () => {
+    const type = button.dataset.qrType;
+    if (type) setQrType(type);
+  });
+});
+
+document.querySelectorAll("[id^='qrField-']").forEach((el) => {
+  if (el instanceof HTMLInputElement && el.type === "checkbox") {
+    el.addEventListener("change", setDirtyState);
+  } else if (el instanceof HTMLSelectElement) {
+    el.addEventListener("change", setDirtyState);
+  } else {
+    el.addEventListener("input", setDirtyState);
+  }
+});
+
+document.getElementById("qrField-text-content")?.addEventListener("input", updateTextCharCounter);
+
+const wifiEncryptionEl = document.getElementById("qrField-wifi-encryption");
+const wifiPasswordGroup = document.getElementById("wifiPasswordGroup");
+if (wifiEncryptionEl && wifiPasswordGroup) {
+  wifiEncryptionEl.addEventListener("change", () => {
+    wifiPasswordGroup.classList.toggle("hidden", wifiEncryptionEl.value === "nopass");
+  });
+}
+
+const populateCountryCodeSelects = () => {
+  const ids = ["qrField-call-code", "qrField-whatsapp-code", "qrField-vcard-phone-code"];
+  const placeholder = t("ui", "countryCodePlaceholder");
+
+  ids.forEach((id) => {
+    const select = document.getElementById(id);
+    if (!select) return;
+
+    const prev = select.value;
+    select.innerHTML = "";
+
+    const ph = document.createElement("option");
+    ph.value = "";
+    ph.textContent = placeholder;
+    ph.disabled = true;
+    select.append(ph);
+
+    COUNTRY_CODES.forEach(([name, code]) => {
+      const opt = document.createElement("option");
+      opt.value = code;
+      opt.textContent = `${name} (+${code})`;
+      select.append(opt);
+    });
+
+    select.value = prev && select.querySelector(`option[value="${prev}"]`) ? prev : "55";
+  });
+};
+
 applyLanguage(getInitialLanguage());
+populateCountryCodeSelects();
+setQrType(state.qrType);
