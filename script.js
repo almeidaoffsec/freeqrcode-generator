@@ -14,8 +14,20 @@ const statusMessage = document.getElementById("statusMessage");
 const qrCanvas = document.getElementById("qrCanvas");
 const previewFrame = document.getElementById("previewFrame");
 const languageButtons = document.querySelectorAll("[data-language-button]");
+const historyButton = document.getElementById("historyButton");
+const historyModal = document.getElementById("historyModal");
+const historyList = document.getElementById("historyList");
+const clearHistoryButton = document.getElementById("clearHistoryButton");
+const closeHistoryButton = document.getElementById("closeHistoryButton");
+const historyModalStatus = document.getElementById("historyModalStatus");
+const exportHistoryButton = document.getElementById("exportHistoryButton");
+const importHistoryButton = document.getElementById("importHistoryButton");
+const importFileInput = document.getElementById("importFileInput");
+const qrColorDark = document.getElementById("qrColorDark");
+const qrColorLight = document.getElementById("qrColorLight");
 
 const LANGUAGE_STORAGE_KEY = "free-qrcode-language";
+const HISTORY_STORAGE_KEY = "free-qrcode-history";
 const LANGUAGE_QUERY_PARAM = "lang";
 const DEFAULT_LANGUAGE = "pt-BR";
 const DEFAULT_QR_SIZE = 512;
@@ -53,6 +65,20 @@ const TRANSLATIONS = {
       previewBadge: "preview",
       cameraTip: "Dica: use URL completa com https:// para melhorar a leitura em aplicativos de câmera.",
       footerText: "Made with luv by @yurirxmos",
+      qrColorDarkLabel: "Cor do QR",
+      qrColorLightLabel: "Cor do fundo",
+      historyPreview: "Preview",
+      historyButton: "Histórico",
+      historyModalTitle: "Histórico de QR Codes",
+      historyEmpty: "Nenhum QR Code gerado ainda.",
+      historyClearButton: "Limpar",
+      historyDownload: "Baixar",
+      historyDelete: "Excluir",
+      historyCloseButton: "Fechar",
+      historyExportButton: "Exportar JSON",
+      historyImportButton: "Importar JSON",
+      historyImportSuccess: "Importado com sucesso.",
+      historyImportError: "Arquivo inválido.",
     },
     status: {
       initial: "Preencha os campos e clique em Gerar QR Code.",
@@ -98,6 +124,20 @@ const TRANSLATIONS = {
       previewBadge: "preview",
       cameraTip: "Tip: use a full URL with https:// to improve scanning on camera apps.",
       footerText: "Made with luv by @yurirxmos",
+      qrColorDarkLabel: "QR color",
+      qrColorLightLabel: "Background color",
+      historyPreview: "Preview",
+      historyButton: "History",
+      historyModalTitle: "QR Code History",
+      historyEmpty: "No QR Codes generated yet.",
+      historyClearButton: "Clear",
+      historyDownload: "Download",
+      historyDelete: "Delete",
+      historyCloseButton: "Close",
+      historyExportButton: "Export JSON",
+      historyImportButton: "Import JSON",
+      historyImportSuccess: "Imported successfully.",
+      historyImportError: "Invalid file.",
     },
     status: {
       initial: "Fill in the fields and click Generate QR Code.",
@@ -148,6 +188,19 @@ const QR_CODE_SCRIPT_SOURCES = [
   "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js",
 ];
 
+const loadHistory = () => {
+  try {
+    const stored = localStorage.getItem(HISTORY_STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    }
+  } catch (_error) {}
+  return [];
+};
+
 const state = {
   hasGenerated: false,
   isGenerating: false,
@@ -155,6 +208,7 @@ const state = {
   currentLanguage: DEFAULT_LANGUAGE,
   lastStatusKey: "initial",
   lastStatusType: "info",
+  history: loadHistory(),
 };
 
 let qrCodeLibraryPromise = null;
@@ -338,6 +392,8 @@ const applyLanguage = (language) => {
   try {
     localStorage.setItem(LANGUAGE_STORAGE_KEY, normalizedLanguage);
   } catch (_error) {}
+
+  renderHistoryList();
 };
 
 const getInitialLanguage = () => {
@@ -428,7 +484,7 @@ const loadImage = async (source) =>
     image.src = source;
   });
 
-const renderQrCodeWithLegacyApi = async ({ canvas, text, size }) => {
+const renderQrCodeWithLegacyApi = async ({ canvas, text, size, darkColor, lightColor }) => {
   const context = canvas.getContext("2d");
   if (!context) {
     throw createI18nError("canvasContextFailed");
@@ -452,8 +508,8 @@ const renderQrCodeWithLegacyApi = async ({ canvas, text, size }) => {
       text,
       width: size,
       height: size,
-      colorDark: "#0f172a",
-      colorLight: "#ffffff",
+      colorDark: darkColor,
+      colorLight: lightColor,
       correctLevel: legacyQrCode.CorrectLevel?.H,
     });
 
@@ -485,14 +541,14 @@ const renderQrCodeWithLegacyApi = async ({ canvas, text, size }) => {
 const getQrCodeRenderer = () => {
   if (window.QRCode && typeof window.QRCode.toCanvas === "function") {
     return {
-      render: async ({ canvas, text, size }) => {
+      render: async ({ canvas, text, size, darkColor, lightColor }) => {
         await window.QRCode.toCanvas(canvas, text, {
           width: size,
           margin: 1,
           errorCorrectionLevel: "H",
           color: {
-            dark: "#0f172a",
-            light: "#ffffff",
+            dark: darkColor,
+            light: lightColor,
           },
         });
       },
@@ -597,6 +653,8 @@ const generateQrCode = async () => {
       canvas: qrCanvas,
       text: contentValue,
       size: sizeValue,
+      darkColor: qrColorDark.value,
+      lightColor: qrColorLight.value,
     });
 
     if (state.logoDataUrl) {
@@ -609,6 +667,12 @@ const generateQrCode = async () => {
     }
 
     state.hasGenerated = true;
+    addToHistory({
+      id: Date.now(),
+      content: contentValue,
+      dataUrl: qrCanvas.toDataURL("image/png"),
+      fileName: getDownloadFileName(),
+    });
     animatePreviewFrame();
     setStatus("generatedSuccess", "success");
   } catch (error) {
@@ -691,6 +755,176 @@ const handleLogoChange = async () => {
   setDirtyState();
 };
 
+const saveHistory = () => {
+  try {
+    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(state.history));
+  } catch (_error) {
+    setStatus("exportFailed", "error");
+  }
+};
+
+const addToHistory = (entry) => {
+  state.history.push(entry);
+  saveHistory();
+  renderHistoryList();
+};
+
+const clearHistory = () => {
+  state.history = [];
+  try {
+    localStorage.removeItem(HISTORY_STORAGE_KEY);
+  } catch (_error) {}
+  renderHistoryList();
+};
+
+const downloadHistoryItem = (dataUrl, fileName) => {
+  const link = document.createElement("a");
+  link.href = dataUrl;
+  link.download = fileName;
+  link.click();
+};
+
+const deleteHistoryItem = (id) => {
+  state.history = state.history.filter((entry) => entry.id !== id);
+  saveHistory();
+  renderHistoryList();
+};
+
+const getHistoryExportFileName = () =>
+  state.currentLanguage === "en-US" ? "qrcode-history.json" : "historico-qrcode.json";
+
+const exportHistory = () => {
+  const blob = new Blob([JSON.stringify(state.history, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = getHistoryExportFileName();
+  link.click();
+  URL.revokeObjectURL(url);
+};
+
+let historyStatusTimer = null;
+
+const showHistoryModalStatus = (messageKey, isError = false) => {
+  if (!historyModalStatus) {
+    return;
+  }
+  historyModalStatus.textContent = t("ui", messageKey);
+  historyModalStatus.className = `text-xs ${isError ? "text-rose-500" : "text-emerald-600"}`;
+  clearTimeout(historyStatusTimer);
+  historyStatusTimer = window.setTimeout(() => {
+    if (historyModalStatus) {
+      historyModalStatus.textContent = "";
+    }
+  }, 3000);
+};
+
+const importHistory = (file) => {
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(reader.result);
+      if (!Array.isArray(parsed)) {
+        showHistoryModalStatus("historyImportError", true);
+        return;
+      }
+      const validEntries = parsed.filter(
+        (entry) =>
+          entry &&
+          typeof entry.id === "number" &&
+          typeof entry.content === "string" &&
+          typeof entry.dataUrl === "string" &&
+          typeof entry.fileName === "string"
+      );
+      const existingIds = new Set(state.history.map((e) => e.id));
+      const newEntries = validEntries.filter((e) => !existingIds.has(e.id));
+      state.history = [...state.history, ...newEntries];
+      saveHistory();
+      renderHistoryList();
+      showHistoryModalStatus("historyImportSuccess");
+    } catch (_error) {
+      showHistoryModalStatus("historyImportError", true);
+    }
+  };
+  reader.onerror = () => showHistoryModalStatus("historyImportError", true);
+  reader.readAsText(file);
+};
+
+const renderHistoryList = () => {
+  if (!historyList) {
+    return;
+  }
+
+  historyList.innerHTML = "";
+
+  if (state.history.length === 0) {
+    const emptyEl = document.createElement("p");
+    emptyEl.textContent = t("ui", "historyEmpty");
+    emptyEl.className = "py-8 text-center text-sm text-zinc-400";
+    historyList.append(emptyEl);
+    return;
+  }
+
+  [...state.history].reverse().forEach((entry) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "border-b border-zinc-100 py-3 last:border-0";
+
+    const row = document.createElement("div");
+    row.className = "flex items-center gap-3";
+
+    const contentEl = document.createElement("p");
+    contentEl.textContent = entry.content;
+    contentEl.className = "min-w-0 flex-1 truncate text-sm text-zinc-700";
+
+    const previewBtn = document.createElement("button");
+    previewBtn.textContent = t("ui", "historyPreview");
+    previewBtn.type = "button";
+    previewBtn.className =
+      "shrink-0 rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100";
+
+    const previewPanel = document.createElement("div");
+    previewPanel.className = "hidden mt-3";
+    const previewImg = document.createElement("img");
+    previewImg.src = entry.dataUrl;
+    previewImg.alt = entry.content;
+    previewImg.className = "w-32 rounded-lg border border-zinc-200";
+    previewPanel.append(previewImg);
+
+    previewBtn.addEventListener("click", () => {
+      previewPanel.classList.toggle("hidden");
+    });
+
+    const downloadBtn = document.createElement("button");
+    downloadBtn.textContent = t("ui", "historyDownload");
+    downloadBtn.type = "button";
+    downloadBtn.className =
+      "shrink-0 rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100";
+    downloadBtn.addEventListener("click", () => downloadHistoryItem(entry.dataUrl, entry.fileName));
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = t("ui", "historyDelete");
+    deleteBtn.type = "button";
+    deleteBtn.className =
+      "shrink-0 rounded-md border border-rose-200 bg-white px-3 py-1.5 text-xs font-medium text-rose-600 transition hover:bg-rose-50";
+    deleteBtn.addEventListener("click", () => deleteHistoryItem(entry.id));
+
+    row.append(contentEl, previewBtn, downloadBtn, deleteBtn);
+    wrapper.append(row, previewPanel);
+    historyList.append(wrapper);
+  });
+};
+
+const openHistoryModal = () => {
+  renderHistoryList();
+  historyModal.classList.remove("hidden");
+  historyModal.classList.add("flex");
+};
+
+const closeHistoryModal = () => {
+  historyModal.classList.remove("flex");
+  historyModal.classList.add("hidden");
+};
+
 generateButton.addEventListener("click", generateQrCode);
 downloadButton.addEventListener("click", downloadQrCode);
 logoInput.addEventListener("change", handleLogoChange);
@@ -728,5 +962,50 @@ CONTROL_LIST.forEach((element) => {
   element.addEventListener("input", setDirtyState);
   element.addEventListener("change", setDirtyState);
 });
+
+qrColorDark.addEventListener("input", setDirtyState);
+qrColorLight.addEventListener("input", setDirtyState);
+
+if (historyButton) {
+  historyButton.addEventListener("click", openHistoryModal);
+}
+
+if (clearHistoryButton) {
+  clearHistoryButton.addEventListener("click", clearHistory);
+}
+
+if (closeHistoryButton) {
+  closeHistoryButton.addEventListener("click", closeHistoryModal);
+}
+
+if (historyModal) {
+  historyModal.addEventListener("click", (event) => {
+    if (event.target === historyModal) {
+      closeHistoryModal();
+    }
+  });
+}
+
+if (exportHistoryButton) {
+  exportHistoryButton.addEventListener("click", exportHistory);
+}
+
+if (importHistoryButton) {
+  importHistoryButton.addEventListener("click", () => {
+    if (importFileInput) {
+      importFileInput.value = "";
+      importFileInput.click();
+    }
+  });
+}
+
+if (importFileInput) {
+  importFileInput.addEventListener("change", () => {
+    const [file] = importFileInput.files || [];
+    if (file) {
+      importHistory(file);
+    }
+  });
+}
 
 applyLanguage(getInitialLanguage());

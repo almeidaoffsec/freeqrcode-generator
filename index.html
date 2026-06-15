@@ -359,6 +359,37 @@
             </div>
           </div>
 
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="space-y-2">
+              <label
+                for="qrColorDark"
+                data-i18n="qrColorDarkLabel"
+                class="block text-sm font-medium text-zinc-700"
+                >Cor do QR</label
+              >
+              <input
+                id="qrColorDark"
+                type="color"
+                value="#0f172a"
+                class="h-10 w-full cursor-pointer rounded-md border border-zinc-300 bg-white p-1"
+              />
+            </div>
+            <div class="space-y-2">
+              <label
+                for="qrColorLight"
+                data-i18n="qrColorLightLabel"
+                class="block text-sm font-medium text-zinc-700"
+                >Cor do fundo</label
+              >
+              <input
+                id="qrColorLight"
+                type="color"
+                value="#ffffff"
+                class="h-10 w-full cursor-pointer rounded-md border border-zinc-300 bg-white p-1"
+              />
+            </div>
+          </div>
+
           <div class="grid gap-3 sm:grid-cols-2">
             <button
               id="generateButton"
@@ -381,6 +412,15 @@
               Baixar PNG
             </button>
           </div>
+
+          <button
+            id="historyButton"
+            type="button"
+            data-i18n="historyButton"
+            class="inline-flex h-10 w-full items-center justify-center rounded-md border border-zinc-300 bg-white px-4 text-sm font-medium text-zinc-900 transition hover:bg-zinc-100"
+          >
+            Histórico
+          </button>
 
           <p
             id="statusMessage"
@@ -427,5 +467,54 @@
         <p data-i18n="footerText">Visual renovado para transmitir mais personalidade sem perder simplicidade.</p>
       </footer>
     </main>
+    <div
+      id="historyModal"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4"
+    >
+      <div
+        class="flex w-full max-w-lg flex-col rounded-xl bg-white shadow-xl"
+        style="max-height: 80vh"
+      >
+        <header class="flex shrink-0 items-center justify-between border-b border-zinc-200 px-5 py-4">
+          <h2
+            data-i18n="historyModalTitle"
+            class="text-base font-semibold text-zinc-900"
+          ></h2>
+          <div class="flex items-center gap-2">
+            <button
+              id="clearHistoryButton"
+              type="button"
+              data-i18n="historyClearButton"
+              class="rounded-md px-3 py-1.5 text-xs font-medium text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-700"
+            ></button>
+            <button
+              id="closeHistoryButton"
+              type="button"
+              data-i18n="historyCloseButton"
+              class="rounded-md px-3 py-1.5 text-xs font-medium text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-700"
+            ></button>
+          </div>
+        </header>
+        <div id="historyList" class="overflow-y-auto px-5 py-3"></div>
+        <footer class="flex shrink-0 items-center justify-between gap-3 border-t border-zinc-200 px-5 py-3">
+          <p id="historyModalStatus" class="text-xs text-zinc-400"></p>
+          <div class="flex items-center gap-2">
+            <button
+              id="importHistoryButton"
+              type="button"
+              data-i18n="historyImportButton"
+              class="rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100"
+            ></button>
+            <button
+              id="exportHistoryButton"
+              type="button"
+              data-i18n="historyExportButton"
+              class="rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100"
+            ></button>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <input id="importFileInput" type="file" accept=".json" class="hidden" />
   </body>
 </html>
