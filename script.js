@@ -31,6 +31,12 @@ const frameOptions = document.getElementById("frameOptions");
 const frameTextInput = document.getElementById("frameText");
 const frameColorInput = document.getElementById("frameColor");
 const frameTextColorInput = document.getElementById("frameTextColor");
+const presetLogosButton = document.getElementById("presetLogosButton");
+const presetLogosModal = document.getElementById("presetLogosModal");
+const closePresetLogosButton = document.getElementById("closePresetLogosButton");
+const manualButton = document.getElementById("manualButton");
+const manualModal = document.getElementById("manualModal");
+const closeManualButton = document.getElementById("closeManualButton");
 
 const LANGUAGE_STORAGE_KEY = "free-qrcode-language";
 const HISTORY_STORAGE_KEY = "free-qrcode-history";
@@ -126,6 +132,30 @@ const COUNTRY_CODES = [
   ["Venezuela", "58"], ["Vietnam", "84"], ["Wake Island", "1808"],
   ["Wallis and Futuna", "681"], ["Yemen", "967"], ["Zambia", "260"],
   ["Zanzibar", "255"], ["Zimbabwe", "263"],
+];
+
+const PRESET_LOGOS = [
+  { name: "Facebook", file: "logos/facebook.svg" },
+  { name: "GitHub", file: "logos/github.svg" },
+  { name: "Instagram", file: "logos/instagram.svg" },
+  { name: "LinkedIn", file: "logos/linkedin.svg" },
+  { name: "Pinterest", file: "logos/pinterest.svg" },
+  { name: "Telegram", file: "logos/telegram.svg" },
+  { name: "TikTok", file: "logos/tiktok.svg" },
+  { name: "WhatsApp", file: "logos/whatsapp.svg" },
+  { name: "X", file: "logos/x.svg" },
+  { name: "YouTube", file: "logos/youtube.svg" },
+];
+
+const MANUAL_SECTIONS = [
+  ["s1title", "s1body"],
+  ["s2title", "s2body"],
+  ["s3title", "s3body"],
+  ["s4title", "s4body"],
+  ["s5title", "s5body"],
+  ["s6title", "s6body"],
+  ["s7title", "s7body"],
+  ["s8title", "s8body"],
 ];
 
 const STATUS_STYLE_MAP = {
@@ -229,6 +259,10 @@ const TRANSLATIONS = {
       placeholderCountry: "BR",
       placeholderSsid: "MinhaRede",
       placeholderPassword: "Senha",
+      presetLogosTitle: "Logos disponíveis",
+      presetLogosButton: "Escolher logo",
+      manualTitle: "Manual de uso",
+      manualButtonTitle: "Manual",
     },
     status: {
       initial: "Preencha os campos e clique em Gerar QR Code.",
@@ -247,6 +281,24 @@ const TRANSLATIONS = {
       invalidQrEngine: "Motor de QR Code inválido.",
       qrRenderFailed: "Falha ao gerar o QR Code.",
       qrLibraryUnavailable: "Não foi possível carregar o motor de QR Code. Verifique a conexão e recarregue a página.",
+    },
+    manual: {
+      s1title: "Tipos de QR Code",
+      s1body: "Escolha entre Link, Texto, E-mail, Chamada, WhatsApp, V-Card e Wi-Fi. Cada tipo formata automaticamente o conteúdo — basta preencher os campos exibidos.",
+      s2title: "Logo",
+      s2body: "Suba uma imagem do seu dispositivo ou clique em 'Escolher logo' para selecionar uma marca conhecida. Use os controles de tamanho e margem para ajustar o posicionamento.",
+      s3title: "Cores",
+      s3body: "Personalize a cor dos módulos do QR e do fundo. Para garantir a leitura por qualquer câmera, mantenha alto contraste entre as duas cores.",
+      s4title: "Frame",
+      s4body: "Ative 'Adicionar frame' para incluir uma moldura ao redor do QR com texto personalizado. Escolha as cores do frame e do texto para combinar com sua identidade visual.",
+      s5title: "Gerar e Baixar",
+      s5body: "Preencha os campos e clique em 'Gerar QR Code'. Após a geração, clique em 'Baixar PNG' para salvar a imagem em alta resolução (512 × 512 px).",
+      s6title: "Nome do QR",
+      s6body: "Adicione um nome para identificar facilmente o QR no histórico. Se deixado em branco, o conteúdo gerado é exibido no lugar.",
+      s7title: "Histórico",
+      s7body: "Cada QR gerado é salvo automaticamente no navegador. Você pode visualizar, clonar (restaurar configurações no painel de edição), baixar ou excluir entradas individualmente.",
+      s8title: "Exportar e Importar",
+      s8body: "No histórico, exporte os dados como arquivo JSON para backup ou para transferir para outro dispositivo. Importe um arquivo exportado anteriormente para restaurar o histórico.",
     },
   },
   "en-US": {
@@ -343,6 +395,10 @@ const TRANSLATIONS = {
       placeholderCountry: "US",
       placeholderSsid: "MyNetwork",
       placeholderPassword: "Password",
+      presetLogosTitle: "Available logos",
+      presetLogosButton: "Choose logo",
+      manualTitle: "How to use",
+      manualButtonTitle: "Help",
     },
     status: {
       initial: "Fill in the fields and click Generate QR Code.",
@@ -361,6 +417,24 @@ const TRANSLATIONS = {
       invalidQrEngine: "Invalid QR Code engine.",
       qrRenderFailed: "Failed to generate the QR Code.",
       qrLibraryUnavailable: "Could not load the QR Code engine. Check your connection and reload the page.",
+    },
+    manual: {
+      s1title: "QR Code Types",
+      s1body: "Choose from Link, Text, Email, Call, WhatsApp, VCard, and Wi-Fi. Each type automatically formats the content — just fill in the displayed fields.",
+      s2title: "Logo",
+      s2body: "Upload an image from your device or click 'Choose logo' to pick a well-known brand. Use the size and padding sliders to adjust the positioning.",
+      s3title: "Colors",
+      s3body: "Customize the QR module color and the background color. For reliable scanning on any camera, maintain high contrast between both colors.",
+      s4title: "Frame",
+      s4body: "Enable 'Add frame' to wrap the QR with a decorative border and custom text. Choose frame and text colors to match your brand identity.",
+      s5title: "Generate & Download",
+      s5body: "Fill in the fields and click 'Generate QR Code'. Once generated, click 'Download PNG' to save the high-resolution image (512 × 512 px).",
+      s6title: "QR Name",
+      s6body: "Add a name to easily identify the QR in history. If left blank, the generated content is displayed instead.",
+      s7title: "History",
+      s7body: "Every generated QR is automatically saved in the browser. You can preview, clone (restore settings to the edit panel), download, or delete individual entries.",
+      s8title: "Export & Import",
+      s8body: "In history, export data as a JSON file for backup or cross-device transfer. Import a previously exported file to restore your history.",
     },
   },
 };
@@ -581,6 +655,13 @@ const applyLanguage = (language) => {
     element.placeholder = t("ui", key);
   });
 
+  document.querySelectorAll("[data-i18n-title]").forEach((element) => {
+    const key = element.dataset.i18nTitle;
+    if (!key) return;
+    element.title = t("ui", key);
+    element.setAttribute("aria-label", t("ui", key));
+  });
+
   if (logoScaleSuffix) {
     logoScaleSuffix.textContent = t("ui", "logoScaleSuffix");
   }
@@ -600,6 +681,7 @@ const applyLanguage = (language) => {
   } catch (_error) {}
 
   renderHistoryList();
+  if (manualModal && !manualModal.classList.contains("hidden")) renderManualContent();
 };
 
 const getInitialLanguage = () => {
@@ -1455,6 +1537,107 @@ const closeHistoryModal = () => {
   historyModal.classList.add("hidden");
 };
 
+const renderManualContent = () => {
+  const container = document.getElementById("manualContent");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  MANUAL_SECTIONS.forEach(([titleKey, bodyKey]) => {
+    const section = document.createElement("div");
+    section.className = "py-3.5";
+
+    const h3 = document.createElement("h3");
+    h3.textContent = t("manual", titleKey);
+    h3.className = "mb-1 text-sm font-semibold text-zinc-900";
+
+    const p = document.createElement("p");
+    p.textContent = t("manual", bodyKey);
+    p.className = "text-sm leading-relaxed text-zinc-600";
+
+    section.append(h3, p);
+    container.append(section);
+  });
+};
+
+const openManualModal = () => {
+  if (!manualModal) return;
+  renderManualContent();
+  manualModal.classList.remove("hidden");
+  manualModal.classList.add("flex");
+};
+
+const closeManualModal = () => {
+  if (!manualModal) return;
+  manualModal.classList.remove("flex");
+  manualModal.classList.add("hidden");
+};
+
+const openPresetLogosModal = () => {
+  if (!presetLogosModal) return;
+  renderPresetLogosList();
+  presetLogosModal.classList.remove("hidden");
+  presetLogosModal.classList.add("flex");
+};
+
+const closePresetLogosModal = () => {
+  if (!presetLogosModal) return;
+  presetLogosModal.classList.remove("flex");
+  presetLogosModal.classList.add("hidden");
+};
+
+const selectPresetLogo = async (file, name) => {
+  try {
+    const response = await fetch(file);
+    if (!response.ok) throw new Error("fetch failed");
+    const blob = await response.blob();
+    const dataUrl = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+    state.logoDataUrl = dataUrl;
+    logoFileName.textContent = name;
+    setDirtyState();
+    closePresetLogosModal();
+  } catch (_error) {
+    setStatus("logoLoadFailed", "error");
+  }
+};
+
+const renderPresetLogosList = () => {
+  const list = document.getElementById("presetLogosList");
+  if (!list) return;
+
+  list.innerHTML = "";
+
+  const grid = document.createElement("div");
+  grid.className = "grid grid-cols-4 gap-3";
+
+  PRESET_LOGOS.forEach(({ name, file }) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className =
+      "flex flex-col items-center gap-1.5 rounded-lg border border-zinc-200 p-2 text-center transition hover:border-zinc-400 hover:bg-zinc-50";
+    btn.addEventListener("click", () => selectPresetLogo(file, name));
+
+    const img = document.createElement("img");
+    img.src = file;
+    img.alt = name;
+    img.className = "h-10 w-10 rounded-lg object-contain";
+
+    const label = document.createElement("span");
+    label.textContent = name;
+    label.className = "text-xs leading-tight text-zinc-600";
+
+    btn.append(img, label);
+    grid.append(btn);
+  });
+
+  list.append(grid);
+};
+
 generateButton.addEventListener("click", generateQrCode);
 downloadButton.addEventListener("click", downloadQrCode);
 logoInput.addEventListener("change", handleLogoChange);
@@ -1603,6 +1786,34 @@ const populateCountryCodeSelects = () => {
     select.value = prev && select.querySelector(`option[value="${prev}"]`) ? prev : "55";
   });
 };
+
+if (manualButton) {
+  manualButton.addEventListener("click", openManualModal);
+}
+
+if (closeManualButton) {
+  closeManualButton.addEventListener("click", closeManualModal);
+}
+
+if (manualModal) {
+  manualModal.addEventListener("click", (event) => {
+    if (event.target === manualModal) closeManualModal();
+  });
+}
+
+if (presetLogosButton) {
+  presetLogosButton.addEventListener("click", openPresetLogosModal);
+}
+
+if (closePresetLogosButton) {
+  closePresetLogosButton.addEventListener("click", closePresetLogosModal);
+}
+
+if (presetLogosModal) {
+  presetLogosModal.addEventListener("click", (event) => {
+    if (event.target === presetLogosModal) closePresetLogosModal();
+  });
+}
 
 applyLanguage(getInitialLanguage());
 populateCountryCodeSelects();
