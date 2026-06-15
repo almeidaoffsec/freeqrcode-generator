@@ -26,6 +26,10 @@ const qrColorDark = document.getElementById("qrColorDark");
 const qrColorLight = document.getElementById("qrColorLight");
 const qrNameInput = document.getElementById("qrName");
 const textCharCounter = document.getElementById("textCharCounter");
+const frameEnabledInput = document.getElementById("frameEnabled");
+const frameOptions = document.getElementById("frameOptions");
+const frameTextInput = document.getElementById("frameText");
+const frameColorInput = document.getElementById("frameColor");
 
 const LANGUAGE_STORAGE_KEY = "free-qrcode-language";
 const HISTORY_STORAGE_KEY = "free-qrcode-history";
@@ -34,6 +38,12 @@ const DEFAULT_LANGUAGE = "pt-BR";
 const DEFAULT_QR_SIZE = 512;
 const QR_TEXT_MAX_CHARS = 500;
 const APP_BASE_URL = "http://freeqrcode.rxmos.dev.br/";
+const FRAME_SIDE = 20;
+const FRAME_TOP = 20;
+const FRAME_BOTTOM = 72;
+const FRAME_OUTER_R = 24;
+const FRAME_INNER_R = 8;
+const FRAME_FONT_SIZE = 32;
 
 const QR_TYPE_PRIMARY_FIELD = {
   link: "qrField-link-url",
@@ -165,6 +175,10 @@ const TRANSLATIONS = {
       historyImportError: "Arquivo inválido.",
       qrNameLabel: "Nome (opcional)",
       qrNamePlaceholder: "Ex: Cardápio do restaurante",
+      frameLabel: "Adicionar frame",
+      frameTextLabel: "Texto do frame",
+      frameTextPlaceholder: "exemplo",
+      frameColorLabel: "Cor do frame",
       typeLabel: "Tipo",
       typeLink: "Link",
       typeText: "Texto",
@@ -272,6 +286,10 @@ const TRANSLATIONS = {
       historyImportError: "Invalid file.",
       qrNameLabel: "Name (optional)",
       qrNamePlaceholder: "e.g.: Restaurant menu",
+      frameLabel: "Add frame",
+      frameTextLabel: "Frame text",
+      frameTextPlaceholder: "example",
+      frameColorLabel: "Frame color",
       typeLabel: "Type",
       typeLink: "Link",
       typeText: "Text",
@@ -626,6 +644,26 @@ const setDirtyState = () => {
   setStatus("dirty");
 };
 
+const getContrastColor = (hex) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.5 ? "#000000" : "#ffffff";
+};
+
+const drawRoundedRectTopOnly = (ctx, x, y, w, h, r) => {
+  const radius = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + w - radius, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+  ctx.lineTo(x + w, y + h);
+  ctx.lineTo(x, y + h);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+};
+
 const drawRoundedRect = (context, x, y, width, height, radius) => {
   const normalizedRadius = Math.min(radius, width / 2, height / 2);
 
@@ -823,6 +861,42 @@ const updateTextCharCounter = () => {
   }`;
 };
 
+const drawFrame = (canvas, text, frameColor) => {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw createI18nError("canvasContextFailed");
+
+  const qrW = canvas.width;
+  const qrH = canvas.height;
+
+  const offscreen = document.createElement("canvas");
+  offscreen.width = qrW;
+  offscreen.height = qrH;
+  offscreen.getContext("2d").drawImage(canvas, 0, 0);
+
+  const newW = qrW + FRAME_SIDE * 2;
+  const newH = qrH + FRAME_TOP + FRAME_BOTTOM;
+  canvas.width = newW;
+  canvas.height = newH;
+
+  ctx.fillStyle = frameColor;
+  drawRoundedRect(ctx, 0, 0, newW, newH, FRAME_OUTER_R);
+  ctx.fill();
+
+  ctx.fillStyle = "#ffffff";
+  drawRoundedRectTopOnly(ctx, FRAME_SIDE, FRAME_TOP, qrW, qrH, FRAME_INNER_R);
+  ctx.fill();
+
+  ctx.drawImage(offscreen, FRAME_SIDE, FRAME_TOP);
+
+  if (text) {
+    ctx.fillStyle = getContrastColor(frameColor);
+    ctx.font = `600 ${FRAME_FONT_SIZE}px sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(text, newW / 2, qrH + FRAME_TOP + FRAME_BOTTOM / 2, newW - FRAME_SIDE * 2);
+  }
+};
+
 const getTypeLabel = (type) => {
   const key = `type${type.charAt(0).toUpperCase()}${type.slice(1)}`;
   return t("ui", key) || type;
@@ -973,6 +1047,14 @@ const generateQrCode = async () => {
         scalePercent,
         paddingPercent,
       });
+    }
+
+    if (frameEnabledInput?.checked) {
+      drawFrame(
+        qrCanvas,
+        frameTextInput?.value?.trim() ?? "",
+        frameColorInput?.value ?? "#000000"
+      );
     }
 
     state.hasGenerated = true;
@@ -1346,6 +1428,17 @@ document.querySelectorAll("[id^='qrField-']").forEach((el) => {
 });
 
 document.getElementById("qrField-text-content")?.addEventListener("input", updateTextCharCounter);
+
+if (frameEnabledInput) {
+  frameEnabledInput.addEventListener("change", () => {
+    frameOptions?.classList.toggle("hidden", !frameEnabledInput.checked);
+    setDirtyState();
+  });
+}
+
+[frameTextInput, frameColorInput].forEach((el) => {
+  el?.addEventListener("input", setDirtyState);
+});
 
 const wifiEncryptionEl = document.getElementById("qrField-wifi-encryption");
 const wifiPasswordGroup = document.getElementById("wifiPasswordGroup");
