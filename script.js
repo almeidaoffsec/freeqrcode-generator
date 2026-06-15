@@ -30,6 +30,7 @@ const frameEnabledInput = document.getElementById("frameEnabled");
 const frameOptions = document.getElementById("frameOptions");
 const frameTextInput = document.getElementById("frameText");
 const frameColorInput = document.getElementById("frameColor");
+const frameTextColorInput = document.getElementById("frameTextColor");
 
 const LANGUAGE_STORAGE_KEY = "free-qrcode-language";
 const HISTORY_STORAGE_KEY = "free-qrcode-history";
@@ -173,12 +174,15 @@ const TRANSLATIONS = {
       historyImportButton: "Importar JSON",
       historyImportSuccess: "Importado com sucesso.",
       historyImportError: "Arquivo inválido.",
+      historyClone: "Clonar",
+      cloneNotAvailable: "Este QR não tem dados suficientes para clonar.",
       qrNameLabel: "Nome (opcional)",
       qrNamePlaceholder: "Ex: Cardápio do restaurante",
       frameLabel: "Adicionar frame",
       frameTextLabel: "Texto do frame",
       frameTextPlaceholder: "exemplo",
       frameColorLabel: "Cor do frame",
+      frameTextColorLabel: "Cor do texto",
       typeLabel: "Tipo",
       typeLink: "Link",
       typeText: "Texto",
@@ -284,12 +288,15 @@ const TRANSLATIONS = {
       historyImportButton: "Import JSON",
       historyImportSuccess: "Imported successfully.",
       historyImportError: "Invalid file.",
+      historyClone: "Clone",
+      cloneNotAvailable: "This QR doesn't have enough data to clone.",
       qrNameLabel: "Name (optional)",
       qrNamePlaceholder: "e.g.: Restaurant menu",
       frameLabel: "Add frame",
       frameTextLabel: "Frame text",
       frameTextPlaceholder: "example",
       frameColorLabel: "Frame color",
+      frameTextColorLabel: "Text color",
       typeLabel: "Type",
       typeLink: "Link",
       typeText: "Text",
@@ -861,7 +868,106 @@ const updateTextCharCounter = () => {
   }`;
 };
 
-const drawFrame = (canvas, text, frameColor) => {
+const captureFieldValues = (type) => {
+  const getVal = (id) => document.getElementById(id)?.value ?? "";
+  const fields = {};
+
+  switch (type) {
+    case "link":
+      fields["qrField-link-url"] = getVal("qrField-link-url");
+      break;
+    case "text":
+      fields["qrField-text-content"] = getVal("qrField-text-content");
+      break;
+    case "email":
+      ["to", "subject", "body"].forEach((f) => {
+        fields[`qrField-email-${f}`] = getVal(`qrField-email-${f}`);
+      });
+      break;
+    case "call":
+      fields["qrField-call-code"] = getVal("qrField-call-code");
+      fields["qrField-call-number"] = getVal("qrField-call-number");
+      break;
+    case "whatsapp":
+      fields["qrField-whatsapp-code"] = getVal("qrField-whatsapp-code");
+      fields["qrField-whatsapp-number"] = getVal("qrField-whatsapp-number");
+      fields["qrField-whatsapp-message"] = getVal("qrField-whatsapp-message");
+      break;
+    case "vcard":
+      ["firstname", "lastname", "phone-code", "phone-number", "email", "org", "jobtitle", "url", "street", "city", "zip", "country"].forEach((f) => {
+        fields[`qrField-vcard-${f}`] = getVal(`qrField-vcard-${f}`);
+      });
+      break;
+    case "wifi":
+      fields["qrField-wifi-ssid"] = getVal("qrField-wifi-ssid");
+      fields["qrField-wifi-encryption"] = getVal("qrField-wifi-encryption");
+      fields["qrField-wifi-password"] = getVal("qrField-wifi-password");
+      fields["qrField-wifi-hidden"] = document.getElementById("qrField-wifi-hidden")?.checked ?? false;
+      break;
+  }
+
+  return fields;
+};
+
+const restoreFromSnapshot = (snapshot) => {
+  if (!snapshot) {
+    setStatus("cloneNotAvailable", "info");
+    return;
+  }
+
+  setQrType(snapshot.type || "link");
+
+  Object.entries(snapshot.fields || {}).forEach(([id, value]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (el instanceof HTMLInputElement && el.type === "checkbox") {
+      el.checked = Boolean(value);
+    } else {
+      el.value = value;
+    }
+  });
+
+  if (snapshot.type === "text") updateTextCharCounter();
+
+  if (snapshot.type === "wifi") {
+    const enc = document.getElementById("qrField-wifi-encryption");
+    const pwGroup = document.getElementById("wifiPasswordGroup");
+    if (enc && pwGroup) pwGroup.classList.toggle("hidden", enc.value === "nopass");
+  }
+
+  if (snapshot.colors) {
+    if (qrColorDark) qrColorDark.value = snapshot.colors.dark || "#0f172a";
+    if (qrColorLight) qrColorLight.value = snapshot.colors.light || "#ffffff";
+  }
+
+  if (snapshot.logoScale !== undefined) {
+    logoScale.value = snapshot.logoScale;
+    logoScaleValue.textContent = snapshot.logoScale;
+  }
+  if (snapshot.logoPadding !== undefined) {
+    logoPadding.value = snapshot.logoPadding;
+    logoPaddingValue.textContent = snapshot.logoPadding;
+  }
+
+  if (qrNameInput) qrNameInput.value = snapshot.name || "";
+
+  if (frameEnabledInput && snapshot.frame) {
+    frameEnabledInput.checked = snapshot.frame.enabled || false;
+    frameOptions?.classList.toggle("hidden", !frameEnabledInput.checked);
+    if (frameTextInput) frameTextInput.value = snapshot.frame.text || "";
+    if (frameColorInput) frameColorInput.value = snapshot.frame.color || "#000000";
+    if (frameTextColorInput) frameTextColorInput.value = snapshot.frame.textColor || "#ffffff";
+  }
+
+  state.hasGenerated = false;
+  downloadButton.disabled = true;
+  setStatus("initial");
+
+  closeHistoryModal();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+const drawFrame = (canvas, text, frameColor, textColor) => {
   const ctx = canvas.getContext("2d");
   if (!ctx) throw createI18nError("canvasContextFailed");
 
@@ -889,7 +995,7 @@ const drawFrame = (canvas, text, frameColor) => {
   ctx.drawImage(offscreen, FRAME_SIDE, FRAME_TOP);
 
   if (text) {
-    ctx.fillStyle = getContrastColor(frameColor);
+    ctx.fillStyle = textColor || getContrastColor(frameColor);
     ctx.font = `600 ${FRAME_FONT_SIZE}px sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -1053,7 +1159,8 @@ const generateQrCode = async () => {
       drawFrame(
         qrCanvas,
         frameTextInput?.value?.trim() ?? "",
-        frameColorInput?.value ?? "#000000"
+        frameColorInput?.value ?? "#000000",
+        frameTextColorInput?.value || null
       );
     }
 
@@ -1065,6 +1172,20 @@ const generateQrCode = async () => {
       name: qrNameInput?.value?.trim() || "",
       dataUrl: qrCanvas.toDataURL("image/png"),
       fileName: getDownloadFileName(),
+      snapshot: {
+        type: state.qrType,
+        name: qrNameInput?.value?.trim() || "",
+        fields: captureFieldValues(state.qrType),
+        colors: { dark: qrColorDark.value, light: qrColorLight.value },
+        logoScale: logoScale.value,
+        logoPadding: logoPadding.value,
+        frame: {
+          enabled: frameEnabledInput?.checked || false,
+          text: frameTextInput?.value?.trim() || "",
+          color: frameColorInput?.value || "#000000",
+          textColor: frameTextColorInput?.value || "",
+        },
+      },
     });
     animatePreviewFrame();
     setStatus("generatedSuccess", "success");
@@ -1303,6 +1424,13 @@ const renderHistoryList = () => {
       "shrink-0 rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100";
     downloadBtn.addEventListener("click", () => downloadHistoryItem(entry.dataUrl, entry.fileName));
 
+    const cloneBtn = document.createElement("button");
+    cloneBtn.textContent = t("ui", "historyClone");
+    cloneBtn.type = "button";
+    cloneBtn.className =
+      "shrink-0 rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100";
+    cloneBtn.addEventListener("click", () => restoreFromSnapshot(entry.snapshot));
+
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = t("ui", "historyDelete");
     deleteBtn.type = "button";
@@ -1310,7 +1438,7 @@ const renderHistoryList = () => {
       "shrink-0 rounded-md border border-rose-200 bg-white px-3 py-1.5 text-xs font-medium text-rose-600 transition hover:bg-rose-50";
     deleteBtn.addEventListener("click", () => deleteHistoryItem(entry.id));
 
-    row.append(contentWrapper, previewBtn, downloadBtn, deleteBtn);
+    row.append(contentWrapper, previewBtn, cloneBtn, downloadBtn, deleteBtn);
     wrapper.append(row, previewPanel);
     historyList.append(wrapper);
   });
@@ -1436,7 +1564,7 @@ if (frameEnabledInput) {
   });
 }
 
-[frameTextInput, frameColorInput].forEach((el) => {
+[frameTextInput, frameColorInput, frameTextColorInput].forEach((el) => {
   el?.addEventListener("input", setDirtyState);
 });
 
