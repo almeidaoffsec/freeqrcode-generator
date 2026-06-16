@@ -159,9 +159,9 @@ const MANUAL_SECTIONS = [
 ];
 
 const STATUS_STYLE_MAP = {
-  info: "border-zinc-200 bg-zinc-50 text-zinc-700",
-  success: "border-emerald-200 bg-emerald-50 text-emerald-700",
-  error: "border-rose-200 bg-rose-50 text-rose-700",
+  info: "status-info",
+  success: "status-success",
+  error: "status-error",
 };
 
 const TRANSLATIONS = {
@@ -597,7 +597,7 @@ const getStatusKeyFromError = (error, fallbackKey) => {
 const renderStatus = () => {
   const styleClass = STATUS_STYLE_MAP[state.lastStatusType] || STATUS_STYLE_MAP.info;
   statusMessage.textContent = t("status", state.lastStatusKey);
-  statusMessage.className = `min-h-12 rounded-md border px-3 py-2 text-sm font-medium transition ${styleClass}`;
+  statusMessage.className = `min-h-12 rounded-lg px-3 py-2 text-sm font-medium transition ${styleClass}`;
 };
 
 const setStatus = (statusKey, statusType = "info") => {
@@ -634,7 +634,7 @@ const applyLanguage = (language) => {
 
     const isActive = button.dataset.languageButton === normalizedLanguage;
     button.setAttribute("aria-pressed", isActive ? "true" : "false");
-    button.classList.toggle("bg-zinc-200", isActive);
+    button.classList.toggle("lang-btn-active", isActive);
   });
 
   document.querySelectorAll("[data-i18n]").forEach((element) => {
@@ -946,7 +946,7 @@ const updateTextCharCounter = () => {
 
   textCharCounter.textContent = `${count}/${QR_TEXT_MAX_CHARS}`;
   textCharCounter.className = `text-xs text-right tabular-nums ${
-    ratio >= 1 ? "text-rose-500 font-medium" : ratio >= 0.8 ? "text-amber-500" : "text-zinc-400"
+    ratio >= 1 ? "text-[#FF4D6D] font-medium" : ratio >= 0.8 ? "text-[#FFB347]" : "text-[#4A5568]"
   }`;
 };
 
@@ -1178,12 +1178,8 @@ const setQrType = (type) => {
 
   document.querySelectorAll(".qr-type-tab").forEach((button) => {
     const isActive = button.dataset.qrType === type;
-    button.classList.toggle("bg-zinc-900", isActive);
-    button.classList.toggle("text-white", isActive);
-    button.classList.toggle("border-zinc-900", isActive);
-    button.classList.toggle("bg-white", !isActive);
-    button.classList.toggle("text-zinc-700", !isActive);
-    button.classList.toggle("border-zinc-300", !isActive);
+    button.classList.toggle("tab-active", isActive);
+    button.classList.toggle("tab-inactive", !isActive);
   });
 
   document.querySelectorAll(".qr-type-panel").forEach((panel) => {
@@ -1406,7 +1402,7 @@ const showHistoryModalStatus = (messageKey, isError = false) => {
     return;
   }
   historyModalStatus.textContent = t("ui", messageKey);
-  historyModalStatus.className = `text-xs ${isError ? "text-rose-500" : "text-emerald-600"}`;
+  historyModalStatus.className = `text-xs ${isError ? "text-[#FF4D6D]" : "text-[#39D353]"}`;
   clearTimeout(historyStatusTimer);
   historyStatusTimer = window.setTimeout(() => {
     if (historyModalStatus) {
@@ -1456,14 +1452,14 @@ const renderHistoryList = () => {
   if (state.history.length === 0) {
     const emptyEl = document.createElement("p");
     emptyEl.textContent = t("ui", "historyEmpty");
-    emptyEl.className = "py-8 text-center text-sm text-zinc-400";
+    emptyEl.className = "py-8 text-center text-sm text-[#4A5568]";
     historyList.append(emptyEl);
     return;
   }
 
   [...state.history].reverse().forEach((entry) => {
     const wrapper = document.createElement("div");
-    wrapper.className = "border-b border-zinc-100 py-3 last:border-0";
+    wrapper.className = "history-item-wrapper";
 
     const row = document.createElement("div");
     row.className = "flex items-center gap-3";
@@ -1473,26 +1469,25 @@ const renderHistoryList = () => {
 
     const typeBadge = document.createElement("span");
     typeBadge.textContent = getTypeLabel(entry.type || "link");
-    typeBadge.className = "shrink-0 rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-medium text-zinc-500";
+    typeBadge.className = "type-badge";
 
     const contentEl = document.createElement("p");
     contentEl.textContent = entry.name || entry.content;
-    contentEl.className = "min-w-0 truncate text-sm text-zinc-700";
+    contentEl.className = "min-w-0 truncate text-sm text-[#8A96A8]";
 
     contentWrapper.append(typeBadge, contentEl);
 
     const previewBtn = document.createElement("button");
     previewBtn.textContent = t("ui", "historyPreview");
     previewBtn.type = "button";
-    previewBtn.className =
-      "shrink-0 rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100";
+    previewBtn.className = "history-btn";
 
     const previewPanel = document.createElement("div");
     previewPanel.className = "hidden mt-3";
     const previewImg = document.createElement("img");
     previewImg.src = entry.dataUrl;
     previewImg.alt = entry.content;
-    previewImg.className = "w-32 rounded-lg border border-zinc-200";
+    previewImg.className = "history-preview-img";
     previewPanel.append(previewImg);
 
     previewBtn.addEventListener("click", () => {
@@ -1502,22 +1497,19 @@ const renderHistoryList = () => {
     const downloadBtn = document.createElement("button");
     downloadBtn.textContent = t("ui", "historyDownload");
     downloadBtn.type = "button";
-    downloadBtn.className =
-      "shrink-0 rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100";
+    downloadBtn.className = "history-btn";
     downloadBtn.addEventListener("click", () => downloadHistoryItem(entry.dataUrl, entry.fileName));
 
     const cloneBtn = document.createElement("button");
     cloneBtn.textContent = t("ui", "historyClone");
     cloneBtn.type = "button";
-    cloneBtn.className =
-      "shrink-0 rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100";
+    cloneBtn.className = "history-btn";
     cloneBtn.addEventListener("click", () => restoreFromSnapshot(entry.snapshot));
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = t("ui", "historyDelete");
     deleteBtn.type = "button";
-    deleteBtn.className =
-      "shrink-0 rounded-md border border-rose-200 bg-white px-3 py-1.5 text-xs font-medium text-rose-600 transition hover:bg-rose-50";
+    deleteBtn.className = "history-delete-btn";
     deleteBtn.addEventListener("click", () => deleteHistoryItem(entry.id));
 
     row.append(contentWrapper, previewBtn, cloneBtn, downloadBtn, deleteBtn);
@@ -1545,15 +1537,15 @@ const renderManualContent = () => {
 
   MANUAL_SECTIONS.forEach(([titleKey, bodyKey]) => {
     const section = document.createElement("div");
-    section.className = "py-3.5";
+    section.className = "manual-section";
 
     const h3 = document.createElement("h3");
     h3.textContent = t("manual", titleKey);
-    h3.className = "mb-1 text-sm font-semibold text-zinc-900";
+    h3.className = "mb-1 text-sm font-semibold text-[#EAECF0]";
 
     const p = document.createElement("p");
     p.textContent = t("manual", bodyKey);
-    p.className = "text-sm leading-relaxed text-zinc-600";
+    p.className = "text-sm leading-relaxed text-[#8A96A8]";
 
     section.append(h3, p);
     container.append(section);
@@ -1618,8 +1610,7 @@ const renderPresetLogosList = () => {
   PRESET_LOGOS.forEach(({ name, file }) => {
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className =
-      "flex flex-col items-center gap-1.5 rounded-lg border border-zinc-200 p-2 text-center transition hover:border-zinc-400 hover:bg-zinc-50";
+    btn.className = "preset-logo-btn";
     btn.addEventListener("click", () => selectPresetLogo(file, name));
 
     const img = document.createElement("img");
@@ -1629,7 +1620,7 @@ const renderPresetLogosList = () => {
 
     const label = document.createElement("span");
     label.textContent = name;
-    label.className = "text-xs leading-tight text-zinc-600";
+    label.className = "preset-logo-label";
 
     btn.append(img, label);
     grid.append(btn);
@@ -1745,7 +1736,7 @@ const updateFrameTextCharCounter = () => {
   if (!frameTextCharCounter || !frameTextInput) return;
   const count = frameTextInput.value.length;
   frameTextCharCounter.textContent = `${count}/50`;
-  frameTextCharCounter.className = `text-xs text-right tabular-nums ${count >= 50 ? "text-rose-500 font-medium" : count >= 40 ? "text-amber-500" : "text-zinc-400"}`;
+  frameTextCharCounter.className = `text-xs text-right tabular-nums ${count >= 50 ? "text-[#FF4D6D] font-medium" : count >= 40 ? "text-[#FFB347]" : "text-[#4A5568]"}`;
 };
 
 frameTextInput?.addEventListener("input", updateFrameTextCharCounter);

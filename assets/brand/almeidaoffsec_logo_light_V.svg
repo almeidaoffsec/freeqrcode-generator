@@ -77,25 +77,21 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-size:117.59px;writing-mode:lr-tb;direction:ltr;display:none;fill:#ffffff;stroke-width:1.22489"
+       style="font-size:117.59px;writing-mode:lr-tb;direction:ltr;display:inline;fill:#ffffff;stroke-width:1.22489"
        x="380.42282"
        y="948.79333"
        id="text21"><tspan
          id="tspan21"
-         x="380.42282"
-         y="948.79333"
          sodipodi:role="line"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:117.59px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Bold';fill:#ffffff;stroke-width:1.22489">ALMEIDA</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:42.6667px;font-family:abnes;-inkscape-font-specification:abnes;writing-mode:lr-tb;direction:ltr;display:none;fill:#4a9eff;fill-opacity:1"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:42.6667px;font-family:abnes;-inkscape-font-specification:abnes;writing-mode:lr-tb;direction:ltr;display:inline;fill:#4a9eff;fill-opacity:1"
        x="417.30692"
        y="1000.8044"
        id="text1"><tspan
          sodipodi:role="line"
          id="tspan1"
-         x="417.30692"
-         y="1000.8044"
          style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:42.6667px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Semi-Bold';fill:#4a9eff;fill-opacity:1">OFFENSIVE SECURITY</tspan></text>
   </g>
 </svg>

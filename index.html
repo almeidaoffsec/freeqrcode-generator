@@ -2,10 +2,7 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Free QRCode Generator | Gerador de QR Code Gratis com Logo</title>
     <meta
       name="description"
@@ -19,31 +16,12 @@
       name="robots"
       content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     />
-    <meta
-      name="author"
-      content="Free QRCode Generator"
-    />
-    <meta
-      name="application-name"
-      content="Free QRCode Generator"
-    />
-    <meta
-      name="theme-color"
-      content="#efe8d8"
-    />
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="./favicon.svg"
-    />
-    <meta
-      property="og:type"
-      content="website"
-    />
-    <meta
-      property="og:site_name"
-      content="Free QRCode Generator"
-    />
+    <meta name="author" content="Free QRCode Generator" />
+    <meta name="application-name" content="Free QRCode Generator" />
+    <meta name="theme-color" content="#0A0E1A" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Free QRCode Generator" />
     <meta
       property="og:title"
       content="Free QRCode Generator | Gerador de QR Code Gratis com Logo"
@@ -52,30 +30,12 @@
       property="og:description"
       content="Crie QR Code gratis online com logo central, ajuste de tamanho e download em PNG."
     />
-    <meta
-      property="og:url"
-      content="http://freeqrcode.rxmos.dev.br/"
-    />
-    <meta
-      property="og:image"
-      content="https://i.imgur.com/u389in4h.jpg"
-    />
-    <meta
-      property="og:image:alt"
-      content="Preview do Free QRCode Generator"
-    />
-    <meta
-      property="og:locale"
-      content="pt_BR"
-    />
-    <meta
-      property="og:locale:alternate"
-      content="en_US"
-    />
-    <meta
-      name="twitter:card"
-      content="summary_large_image"
-    />
+    <meta property="og:url" content="http://freeqrcode.rxmos.dev.br/" />
+    <meta property="og:image" content="https://i.imgur.com/u389in4h.jpg" />
+    <meta property="og:image:alt" content="Preview do Free QRCode Generator" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
       content="Free QRCode Generator | Gerador de QR Code Gratis com Logo"
@@ -84,29 +44,11 @@
       name="twitter:description"
       content="Crie QR Code gratis online com logo central, ajuste de tamanho e download em PNG."
     />
-    <meta
-      name="twitter:image"
-      content="https://i.imgur.com/u389in4h.jpg"
-    />
-    <link
-      rel="canonical"
-      href="http://freeqrcode.rxmos.dev.br/"
-    />
-    <link
-      rel="alternate"
-      hreflang="pt-BR"
-      href="http://freeqrcode.rxmos.dev.br/"
-    />
-    <link
-      rel="alternate"
-      hreflang="en-US"
-      href="http://freeqrcode.rxmos.dev.br/?lang=en-US"
-    />
-    <link
-      rel="alternate"
-      hreflang="x-default"
-      href="http://freeqrcode.rxmos.dev.br/"
-    />
+    <meta name="twitter:image" content="https://i.imgur.com/u389in4h.jpg" />
+    <link rel="canonical" href="http://freeqrcode.rxmos.dev.br/" />
+    <link rel="alternate" hreflang="pt-BR" href="http://freeqrcode.rxmos.dev.br/" />
+    <link rel="alternate" hreflang="en-US" href="http://freeqrcode.rxmos.dev.br/?lang=en-US" />
+    <link rel="alternate" hreflang="x-default" href="http://freeqrcode.rxmos.dev.br/" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -138,17 +80,10 @@
         }
       }
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="preconnect"
-      href="https://fonts.googleapis.com"
-    />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -157,205 +92,608 @@
         theme: {
           extend: {
             fontFamily: {
-              sans: ["Manrope", "sans-serif"],
+              display: ["Space Grotesk", "sans-serif"],
+              sans: ["Inter", "sans-serif"],
+              code: ["JetBrains Mono", "monospace"],
             },
           },
         },
       };
     </script>
+    <style>
+      :root {
+        --color-void:           #0A0E1A;
+        --color-deep-navy:      #0D1B2A;
+        --color-scan-blue:      #4A9EFF;
+        --color-terminal:       #00E5C8;
+        --color-vuln-red:       #FF4D6D;
+        --color-warning:        #FFB347;
+        --color-access-ok:      #39D353;
+        --color-text-primary:   #EAECF0;
+        --color-text-secondary: #8A96A8;
+        --color-text-muted:     #4A5568;
+        --font-display: 'Space Grotesk', sans-serif;
+        --font-body:    'Inter', sans-serif;
+        --font-code:    'JetBrains Mono', monospace;
+        --transition-fast:   0.15s ease;
+        --transition-normal: 0.25s ease;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; }
+
+      body {
+        background: var(--color-void);
+        color: var(--color-text-primary);
+        font-family: var(--font-body);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1, h2, h3 { font-family: var(--font-display); }
+
+      a {
+        color: var(--color-scan-blue);
+        text-decoration: none;
+        transition: color var(--transition-fast);
+      }
+      a:hover { color: var(--color-terminal); }
+
+      .card {
+        background: var(--color-deep-navy);
+        border: 0.5px solid rgba(74, 158, 255, 0.15);
+        border-radius: 12px;
+      }
+
+      .btn-primary {
+        font-family: var(--font-body);
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--color-void);
+        background: var(--color-terminal);
+        border: none;
+        border-radius: 8px;
+        padding: 0 1.25rem;
+        cursor: pointer;
+        transition: opacity var(--transition-fast), transform 0.1s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.5rem;
+        width: 100%;
+      }
+      .btn-primary:hover:not(:disabled) { opacity: 0.88; }
+      .btn-primary:active:not(:disabled) { transform: scale(0.98); }
+      .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+
+      .btn-secondary {
+        font-family: var(--font-body);
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--color-scan-blue);
+        background: transparent;
+        border: 0.5px solid rgba(74, 158, 255, 0.4);
+        border-radius: 8px;
+        padding: 0 1.25rem;
+        cursor: pointer;
+        transition: background var(--transition-fast), border-color var(--transition-fast);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.5rem;
+        width: 100%;
+      }
+      .btn-secondary:hover:not(:disabled) {
+        background: rgba(74, 158, 255, 0.08);
+        border-color: rgba(74, 158, 255, 0.7);
+      }
+      .btn-secondary:disabled { opacity: 0.35; cursor: not-allowed; }
+
+      .btn-ghost {
+        font-family: var(--font-body);
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--color-text-secondary);
+        background: transparent;
+        border: none;
+        border-radius: 6px;
+        padding: 0.375rem 0.75rem;
+        cursor: pointer;
+        transition: background var(--transition-fast), color var(--transition-fast);
+      }
+      .btn-ghost:hover {
+        background: rgba(74, 158, 255, 0.08);
+        color: var(--color-text-primary);
+      }
+
+      .manual-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        border: 0.5px solid rgba(74, 158, 255, 0.3);
+        background: transparent;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+      .manual-btn:hover {
+        background: rgba(74, 158, 255, 0.08);
+        border-color: rgba(74, 158, 255, 0.6);
+        color: var(--color-scan-blue);
+      }
+
+      .field-label {
+        font-family: var(--font-body);
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-text-secondary);
+        display: block;
+        margin-bottom: 0.375rem;
+      }
+
+      .input-field {
+        background: rgba(10, 14, 26, 0.6);
+        border: 0.5px solid rgba(74, 158, 255, 0.2);
+        border-radius: 8px;
+        color: var(--color-text-primary);
+        font-family: var(--font-body);
+        font-size: 0.875rem;
+        padding: 0 0.75rem;
+        height: 2.5rem;
+        width: 100%;
+        outline: none;
+        transition: border-color var(--transition-fast);
+      }
+      .input-field:focus { border-color: rgba(74, 158, 255, 0.6); }
+      .input-field::placeholder { color: var(--color-text-muted); }
+      textarea.input-field { height: auto; padding: 0.5rem 0.75rem; resize: none; }
+      select.input-field { cursor: pointer; }
+      select.input-field option { background: var(--color-deep-navy); color: var(--color-text-primary); }
+
+      .file-input {
+        display: block;
+        width: 100%;
+        font-size: 0.875rem;
+        color: var(--color-text-secondary);
+      }
+      .file-input::file-selector-button {
+        background: rgba(74, 158, 255, 0.1);
+        color: var(--color-scan-blue);
+        border: none;
+        border-right: 0.5px solid rgba(74, 158, 255, 0.2);
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        font-family: var(--font-body);
+        font-weight: 500;
+        cursor: pointer;
+        margin-right: 0.75rem;
+        transition: background var(--transition-fast);
+      }
+      .file-input::file-selector-button:hover { background: rgba(74, 158, 255, 0.2); }
+
+      input[type="color"] {
+        height: 2.5rem;
+        width: 100%;
+        cursor: pointer;
+        border-radius: 8px;
+        border: 0.5px solid rgba(74, 158, 255, 0.2);
+        background: var(--color-void);
+        padding: 0.2rem;
+      }
+
+      input[type="range"] { accent-color: var(--color-terminal); width: 100%; }
+      input[type="checkbox"] { accent-color: var(--color-terminal); width: 1rem; height: 1rem; cursor: pointer; }
+
+      .status-info {
+        border: 0.5px solid rgba(74, 158, 255, 0.2);
+        background: rgba(74, 158, 255, 0.04);
+        color: var(--color-text-secondary);
+      }
+      .status-success {
+        border: 0.5px solid rgba(57, 211, 83, 0.3);
+        background: rgba(57, 211, 83, 0.06);
+        color: var(--color-access-ok);
+      }
+      .status-error {
+        border: 0.5px solid rgba(255, 77, 109, 0.3);
+        background: rgba(255, 77, 109, 0.06);
+        color: var(--color-vuln-red);
+      }
+
+      .tab-active {
+        background: rgba(0, 229, 200, 0.12);
+        color: var(--color-terminal);
+        border: 0.5px solid rgba(0, 229, 200, 0.35);
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.375rem 0.75rem;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+      .tab-inactive {
+        background: transparent;
+        color: var(--color-text-secondary);
+        border: 0.5px solid rgba(74, 158, 255, 0.15);
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.375rem 0.75rem;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+      .tab-inactive:hover {
+        background: rgba(74, 158, 255, 0.06);
+        border-color: rgba(74, 158, 255, 0.3);
+        color: var(--color-text-primary);
+      }
+
+      .lang-btn-active { background: rgba(0, 229, 200, 0.1); border-radius: 4px; }
+
+      .choose-logo-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 2.25rem;
+        border-radius: 8px;
+        border: 0.5px dashed rgba(74, 158, 255, 0.3);
+        background: transparent;
+        font-size: 0.75rem;
+        font-weight: 500;
+        font-family: var(--font-body);
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+      .choose-logo-btn:hover {
+        border-color: rgba(74, 158, 255, 0.6);
+        background: rgba(74, 158, 255, 0.04);
+        color: var(--color-scan-blue);
+      }
+
+      .preview-badge {
+        display: inline-flex;
+        border-radius: 6px;
+        border: 0.5px solid rgba(74, 158, 255, 0.2);
+        background: rgba(74, 158, 255, 0.05);
+        padding: 0.2rem 0.625rem;
+        font-size: 0.65rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--color-scan-blue);
+        font-family: var(--font-body);
+      }
+
+      .preview-area {
+        border: 1px dashed rgba(74, 158, 255, 0.18);
+        border-radius: 12px;
+        background: rgba(74, 158, 255, 0.02);
+      }
+
+      .preview-frame {
+        width: 100%;
+        max-width: 520px;
+        border-radius: 12px;
+        border: 0.5px solid rgba(74, 158, 255, 0.12);
+        background: #ffffff;
+        padding: 1rem;
+        transition: transform 0.3s ease;
+      }
+
+      .divider {
+        border-top: 0.5px solid rgba(74, 158, 255, 0.08);
+        padding-top: 1.25rem;
+      }
+
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        align-items: center;
+        justify-content: center;
+        background: rgba(10, 14, 26, 0.88);
+        backdrop-filter: blur(4px);
+        padding: 1rem;
+      }
+      .modal-panel {
+        background: var(--color-deep-navy);
+        border: 0.5px solid rgba(74, 158, 255, 0.2);
+        border-radius: 12px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+      }
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+        border-bottom: 0.5px solid rgba(74, 158, 255, 0.1);
+        padding: 1.25rem 1.5rem;
+      }
+      .modal-footer-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        flex-shrink: 0;
+        border-top: 0.5px solid rgba(74, 158, 255, 0.1);
+        padding: 0.75rem 1.5rem;
+      }
+
+      .history-item-wrapper {
+        border-bottom: 0.5px solid rgba(74, 158, 255, 0.08);
+        padding: 0.75rem 0;
+      }
+      .history-item-wrapper:last-child { border-bottom: none; }
+
+      .type-badge {
+        flex-shrink: 0;
+        border-radius: 4px;
+        background: rgba(74, 158, 255, 0.08);
+        padding: 0.125rem 0.4rem;
+        font-size: 0.65rem;
+        font-weight: 500;
+        color: var(--color-scan-blue);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-family: var(--font-body);
+      }
+
+      .history-btn {
+        flex-shrink: 0;
+        border-radius: 6px;
+        border: 0.5px solid rgba(74, 158, 255, 0.2);
+        background: transparent;
+        padding: 0.25rem 0.625rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        font-family: var(--font-body);
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+      .history-btn:hover {
+        background: rgba(74, 158, 255, 0.08);
+        border-color: rgba(74, 158, 255, 0.4);
+        color: var(--color-text-primary);
+      }
+
+      .history-delete-btn {
+        flex-shrink: 0;
+        border-radius: 6px;
+        border: 0.5px solid rgba(255, 77, 109, 0.25);
+        background: transparent;
+        padding: 0.25rem 0.625rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        font-family: var(--font-body);
+        color: var(--color-vuln-red);
+        cursor: pointer;
+        transition: background var(--transition-fast);
+      }
+      .history-delete-btn:hover { background: rgba(255, 77, 109, 0.08); }
+
+      .history-preview-img {
+        width: 8rem;
+        border-radius: 8px;
+        border: 0.5px solid rgba(74, 158, 255, 0.15);
+        margin-top: 0.75rem;
+      }
+
+      .preset-logo-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.375rem;
+        border-radius: 8px;
+        border: 0.5px solid rgba(74, 158, 255, 0.15);
+        padding: 0.625rem 0.5rem;
+        text-align: center;
+        cursor: pointer;
+        background: transparent;
+        transition: all var(--transition-fast);
+      }
+      .preset-logo-btn:hover {
+        border-color: rgba(74, 158, 255, 0.4);
+        background: rgba(74, 158, 255, 0.06);
+      }
+
+      .preset-logo-label {
+        font-size: 0.7rem;
+        color: var(--color-text-secondary);
+        font-family: var(--font-body);
+        line-height: 1.2;
+      }
+
+      .manual-section {
+        padding: 0.875rem 0;
+        border-bottom: 0.5px solid rgba(74, 158, 255, 0.08);
+      }
+      .manual-section:last-child { border-bottom: none; }
+
+      .site-footer {
+        border-top: 0.5px solid rgba(74, 158, 255, 0.08);
+        padding-top: 1rem;
+        margin-top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      @media (min-width: 640px) {
+        .site-footer { flex-direction: row; align-items: center; justify-content: space-between; }
+      }
+
+      .brand-logo {
+        height: 56px;
+        width: auto;
+        max-width: 52%;
+      }
+      @media (min-width: 640px) {
+        .brand-logo { height: 80px; max-width: none; }
+      }
+      @media (min-width: 1024px) {
+        .brand-logo { height: 128px; }
+      }
+
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: var(--color-void); }
+      ::-webkit-scrollbar-thumb { background: rgba(74, 158, 255, 0.2); border-radius: 2px; }
+      ::-webkit-scrollbar-thumb:hover { background: rgba(74, 158, 255, 0.4); }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
-    <script
-      defer
-      src="./script.js"
-    ></script>
+    <script defer src="./script.js"></script>
   </head>
-  <body class="min-h-screen bg-zinc-50 font-sans text-zinc-900 antialiased">
+  <body class="min-h-screen antialiased">
     <main class="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
-      <header class="mb-8 flex flex-col md:flex-row items-end md:items-center justify-between w-full">
-        <div class="space-y-2">
+      <header class="mb-8">
+        <!-- Top bar: brand left, controls right -->
+        <div class="flex items-center justify-between pb-5 mb-6" style="border-bottom: 0.5px solid rgba(74,158,255,0.1);">
+          <img
+            src="assets/brand/almeidaoffsec_logo_light.svg"
+            alt="almeidaoffsec"
+            class="brand-logo"
+          />
+          <div class="flex items-center gap-2">
+            <button
+              id="manualButton"
+              type="button"
+              data-i18n-title="manualButtonTitle"
+              class="manual-btn"
+              title="Manual"
+              aria-label="Manual"
+            >?</button>
+            <div id="languageSwitcher" class="flex items-center rounded-md p-1">
+              <button
+                type="button"
+                data-language-button="pt-BR"
+                class="language-flag-button rounded p-1.5 transition"
+                title="Português (Brasil)"
+                aria-label="Português (Brasil)"
+              >
+                <svg viewBox="0 0 36 24" aria-hidden="true" class="h-5 w-7 rounded-sm">
+                  <rect width="36" height="24" fill="#009C3B" />
+                  <polygon points="18,3 31,12 18,21 5,12" fill="#FFDF00" />
+                  <circle cx="18" cy="12" r="5" fill="#002776" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                data-language-button="en-US"
+                class="language-flag-button rounded p-1.5 transition"
+                title="English (United States)"
+                aria-label="English (United States)"
+              >
+                <svg viewBox="0 0 19 10" aria-hidden="true" class="h-5 w-7 rounded-sm">
+                  <rect width="19" height="10" fill="#B22234" />
+                  <rect y="1" width="19" height="1" fill="#FFFFFF" />
+                  <rect y="3" width="19" height="1" fill="#FFFFFF" />
+                  <rect y="5" width="19" height="1" fill="#FFFFFF" />
+                  <rect y="7" width="19" height="1" fill="#FFFFFF" />
+                  <rect y="9" width="19" height="1" fill="#FFFFFF" />
+                  <rect width="8" height="5.5" fill="#3C3B6E" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Page title -->
+        <div class="space-y-1.5">
           <h1
             data-i18n="heroTitle"
-            class="max-w-3xl text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl"
+            class="max-w-2xl text-2xl font-bold tracking-tight sm:text-3xl"
           >
             Crie um QR Code com identidade visual forte.
           </h1>
           <p
             data-i18n="heroDescription"
-            class="max-w-2xl text-sm text-zinc-600 sm:text-base"
+            class="max-w-2xl text-sm"
+            style="color: var(--color-text-secondary);"
           >
-            Digite o conteúdo, aplique sua marca no centro e exporte em PNG pronto para impressão, cardápio, embalagem
-            ou campanha.
+            Digite o conteúdo, aplique sua marca no centro e exporte em PNG pronto para impressão, cardápio, embalagem ou campanha.
           </p>
-        </div>
-        <div class="flex items-center gap-2 mt-4 md:mt-0">
-          <button
-            id="manualButton"
-            type="button"
-            data-i18n-title="manualButtonTitle"
-            class="flex h-8 w-8 items-center justify-center rounded-full border border-zinc-300 bg-white text-sm font-semibold text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900"
-            title="Manual"
-            aria-label="Manual"
-          >?</button>
-        <div
-          id="languageSwitcher"
-          class="flex items-center rounded-md p-1"
-        >
-          <button
-            type="button"
-            data-language-button="pt-BR"
-            class="language-flag-button rounded p-1.5 text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-700"
-            title="Português (Brasil)"
-            aria-label="Português (Brasil)"
-          >
-            <svg
-              viewBox="0 0 36 24"
-              aria-hidden="true"
-              class="h-5 w-7 rounded-sm shadow-sm"
-            >
-              <rect
-                width="36"
-                height="24"
-                fill="#009C3B"
-              />
-              <polygon
-                points="18,3 31,12 18,21 5,12"
-                fill="#FFDF00"
-              />
-              <circle
-                cx="18"
-                cy="12"
-                r="5"
-                fill="#002776"
-              />
-            </svg>
-          </button>
-          <button
-            type="button"
-            data-language-button="en-US"
-            class="language-flag-button rounded p-1.5 text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-700"
-            title="English (United States)"
-            aria-label="English (United States)"
-          >
-            <svg
-              viewBox="0 0 19 10"
-              aria-hidden="true"
-              class="h-5 w-7 rounded-sm shadow-sm"
-            >
-              <rect
-                width="19"
-                height="10"
-                fill="#B22234"
-              />
-              <rect
-                y="1"
-                width="19"
-                height="1"
-                fill="#FFFFFF"
-              />
-              <rect
-                y="3"
-                width="19"
-                height="1"
-                fill="#FFFFFF"
-              />
-              <rect
-                y="5"
-                width="19"
-                height="1"
-                fill="#FFFFFF"
-              />
-              <rect
-                y="7"
-                width="19"
-                height="1"
-                fill="#FFFFFF"
-              />
-              <rect
-                y="9"
-                width="19"
-                height="1"
-                fill="#FFFFFF"
-              />
-              <rect
-                width="8"
-                height="5.5"
-                fill="#3C3B6E"
-              />
-            </svg>
-          </button>
-        </div>
         </div>
       </header>
 
       <section class="grid gap-6 lg:grid-cols-[380px_1fr]">
-        <div class="space-y-5 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm sm:p-6">
+        <!-- Control panel -->
+        <div class="card space-y-5 p-5 sm:p-6">
+          <!-- QR Type tabs -->
           <div class="space-y-2">
-            <label data-i18n="typeLabel" class="block text-sm font-medium text-zinc-700">Tipo</label>
+            <label data-i18n="typeLabel" class="field-label">Tipo</label>
             <div id="qrTypeTabs" class="flex flex-wrap gap-1.5">
-              <button type="button" data-qr-type="link" class="qr-type-tab rounded-md border border-zinc-900 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-zinc-700" data-i18n="typeLink">Link</button>
-              <button type="button" data-qr-type="text" class="qr-type-tab rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100" data-i18n="typeText">Texto</button>
-              <button type="button" data-qr-type="email" class="qr-type-tab rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100" data-i18n="typeEmail">E-mail</button>
-              <button type="button" data-qr-type="call" class="qr-type-tab rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100" data-i18n="typeCall">Chamada</button>
-              <button type="button" data-qr-type="whatsapp" class="qr-type-tab rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100">WhatsApp</button>
-              <button type="button" data-qr-type="vcard" class="qr-type-tab rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100">V-Card</button>
-              <button type="button" data-qr-type="wifi" class="qr-type-tab rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100">Wi-Fi</button>
+              <button type="button" data-qr-type="link"      class="qr-type-tab tab-active"   data-i18n="typeLink">Link</button>
+              <button type="button" data-qr-type="text"      class="qr-type-tab tab-inactive" data-i18n="typeText">Texto</button>
+              <button type="button" data-qr-type="email"     class="qr-type-tab tab-inactive" data-i18n="typeEmail">E-mail</button>
+              <button type="button" data-qr-type="call"      class="qr-type-tab tab-inactive" data-i18n="typeCall">Chamada</button>
+              <button type="button" data-qr-type="whatsapp"  class="qr-type-tab tab-inactive">WhatsApp</button>
+              <button type="button" data-qr-type="vcard"     class="qr-type-tab tab-inactive">V-Card</button>
+              <button type="button" data-qr-type="wifi"      class="qr-type-tab tab-inactive">Wi-Fi</button>
             </div>
           </div>
 
           <!-- Link Panel -->
           <div id="qrTypePanel-link" class="qr-type-panel space-y-1.5">
-            <label for="qrField-link-url" data-i18n="fieldUrl" class="block text-sm font-medium text-zinc-700">URL</label>
-            <input id="qrField-link-url" type="url" data-i18n-placeholder="placeholderUrl" placeholder="https://seusite.com" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            <label for="qrField-link-url" data-i18n="fieldUrl" class="field-label">URL</label>
+            <input id="qrField-link-url" type="url" data-i18n-placeholder="placeholderUrl" placeholder="https://seusite.com" class="input-field" />
           </div>
 
           <!-- Text Panel -->
           <div id="qrTypePanel-text" class="qr-type-panel hidden space-y-1.5">
-            <label for="qrField-text-content" data-i18n="fieldText" class="block text-sm font-medium text-zinc-700">Texto</label>
-            <textarea id="qrField-text-content" rows="4" maxlength="500" data-i18n-placeholder="placeholderText" placeholder="Seu texto aqui..." class="w-full resize-none rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"></textarea>
-            <p id="textCharCounter" class="text-xs text-right tabular-nums text-zinc-400">0/500</p>
+            <label for="qrField-text-content" data-i18n="fieldText" class="field-label">Texto</label>
+            <textarea id="qrField-text-content" rows="4" maxlength="500" data-i18n-placeholder="placeholderText" placeholder="Seu texto aqui..." class="input-field"></textarea>
+            <p id="textCharCounter" class="text-xs text-right tabular-nums" style="color: var(--color-text-muted);">0/500</p>
           </div>
 
           <!-- Email Panel -->
           <div id="qrTypePanel-email" class="qr-type-panel hidden space-y-2">
             <div class="space-y-1.5">
-              <label for="qrField-email-to" data-i18n="fieldEmailTo" class="block text-sm font-medium text-zinc-700">E-mail</label>
-              <input id="qrField-email-to" type="email" data-i18n-placeholder="placeholderEmailTo" placeholder="email@exemplo.com" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+              <label for="qrField-email-to" data-i18n="fieldEmailTo" class="field-label">E-mail</label>
+              <input id="qrField-email-to" type="email" data-i18n-placeholder="placeholderEmailTo" placeholder="email@exemplo.com" class="input-field" />
             </div>
             <div class="space-y-1.5">
-              <label for="qrField-email-subject" data-i18n="fieldSubject" class="block text-sm font-medium text-zinc-700">Assunto</label>
-              <input id="qrField-email-subject" type="text" data-i18n-placeholder="placeholderSubject" placeholder="Assunto" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+              <label for="qrField-email-subject" data-i18n="fieldSubject" class="field-label">Assunto</label>
+              <input id="qrField-email-subject" type="text" data-i18n-placeholder="placeholderSubject" placeholder="Assunto" class="input-field" />
             </div>
             <div class="space-y-1.5">
-              <label for="qrField-email-body" data-i18n="fieldMessage" class="block text-sm font-medium text-zinc-700">Mensagem</label>
-              <textarea id="qrField-email-body" rows="3" data-i18n-placeholder="placeholderMessage" placeholder="Sua mensagem..." class="w-full resize-none rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"></textarea>
+              <label for="qrField-email-body" data-i18n="fieldMessage" class="field-label">Mensagem</label>
+              <textarea id="qrField-email-body" rows="3" data-i18n-placeholder="placeholderMessage" placeholder="Sua mensagem..." class="input-field"></textarea>
             </div>
           </div>
 
           <!-- Call Panel -->
           <div id="qrTypePanel-call" class="qr-type-panel hidden space-y-2">
             <div class="space-y-1.5">
-              <label data-i18n="fieldCountryCode" class="block text-sm font-medium text-zinc-700">País (DDI)</label>
-              <select id="qrField-call-code" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"></select>
+              <label data-i18n="fieldCountryCode" class="field-label">País (DDI)</label>
+              <select id="qrField-call-code" class="input-field"></select>
             </div>
             <div class="space-y-1.5">
-              <label for="qrField-call-number" data-i18n="fieldPhone" class="block text-sm font-medium text-zinc-700">Número</label>
-              <input id="qrField-call-number" type="tel" data-i18n-placeholder="placeholderPhone" placeholder="11999999999" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+              <label for="qrField-call-number" data-i18n="fieldPhone" class="field-label">Número</label>
+              <input id="qrField-call-number" type="tel" data-i18n-placeholder="placeholderPhone" placeholder="11999999999" class="input-field" />
             </div>
           </div>
 
           <!-- WhatsApp Panel -->
           <div id="qrTypePanel-whatsapp" class="qr-type-panel hidden space-y-2">
             <div class="space-y-1.5">
-              <label data-i18n="fieldCountryCode" class="block text-sm font-medium text-zinc-700">País (DDI)</label>
-              <select id="qrField-whatsapp-code" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"></select>
+              <label data-i18n="fieldCountryCode" class="field-label">País (DDI)</label>
+              <select id="qrField-whatsapp-code" class="input-field"></select>
             </div>
             <div class="space-y-1.5">
-              <label for="qrField-whatsapp-number" data-i18n="fieldPhone" class="block text-sm font-medium text-zinc-700">Número</label>
-              <input id="qrField-whatsapp-number" type="tel" data-i18n-placeholder="placeholderPhone" placeholder="11999999999" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+              <label for="qrField-whatsapp-number" data-i18n="fieldPhone" class="field-label">Número</label>
+              <input id="qrField-whatsapp-number" type="tel" data-i18n-placeholder="placeholderPhone" placeholder="11999999999" class="input-field" />
             </div>
             <div class="space-y-1.5">
-              <label for="qrField-whatsapp-message" data-i18n="fieldMessage" class="block text-sm font-medium text-zinc-700">Mensagem</label>
-              <textarea id="qrField-whatsapp-message" rows="3" data-i18n-placeholder="placeholderMessage" placeholder="Sua mensagem..." class="w-full resize-none rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"></textarea>
+              <label for="qrField-whatsapp-message" data-i18n="fieldMessage" class="field-label">Mensagem</label>
+              <textarea id="qrField-whatsapp-message" rows="3" data-i18n-placeholder="placeholderMessage" placeholder="Sua mensagem..." class="input-field"></textarea>
             </div>
           </div>
 
@@ -363,277 +701,180 @@
           <div id="qrTypePanel-vcard" class="qr-type-panel hidden space-y-2">
             <div class="grid grid-cols-2 gap-2">
               <div class="space-y-1">
-                <label for="qrField-vcard-firstname" data-i18n="fieldFirstName" class="block text-xs font-medium text-zinc-600">Nome</label>
-                <input id="qrField-vcard-firstname" type="text" data-i18n-placeholder="placeholderFirstName" placeholder="João" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+                <label for="qrField-vcard-firstname" data-i18n="fieldFirstName" class="field-label">Nome</label>
+                <input id="qrField-vcard-firstname" type="text" data-i18n-placeholder="placeholderFirstName" placeholder="João" class="input-field" style="height:2.25rem" />
               </div>
               <div class="space-y-1">
-                <label for="qrField-vcard-lastname" data-i18n="fieldLastName" class="block text-xs font-medium text-zinc-600">Sobrenome</label>
-                <input id="qrField-vcard-lastname" type="text" data-i18n-placeholder="placeholderLastName" placeholder="Silva" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+                <label for="qrField-vcard-lastname" data-i18n="fieldLastName" class="field-label">Sobrenome</label>
+                <input id="qrField-vcard-lastname" type="text" data-i18n-placeholder="placeholderLastName" placeholder="Silva" class="input-field" style="height:2.25rem" />
               </div>
             </div>
-            <select id="qrField-vcard-phone-code" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"></select>
-            <input id="qrField-vcard-phone-number" type="tel" data-i18n-placeholder="placeholderPhone" placeholder="11999999999" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
-            <input id="qrField-vcard-email" type="email" data-i18n-placeholder="placeholderEmailTo" placeholder="email@exemplo.com" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            <select id="qrField-vcard-phone-code" class="input-field" style="height:2.25rem"></select>
+            <input id="qrField-vcard-phone-number" type="tel" data-i18n-placeholder="placeholderPhone" placeholder="11999999999" class="input-field" style="height:2.25rem" />
+            <input id="qrField-vcard-email" type="email" data-i18n-placeholder="placeholderEmailTo" placeholder="email@exemplo.com" class="input-field" style="height:2.25rem" />
             <div class="grid grid-cols-2 gap-2">
-              <input id="qrField-vcard-org" type="text" data-i18n-placeholder="placeholderOrg" placeholder="Empresa Ltda." class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
-              <input id="qrField-vcard-jobtitle" type="text" data-i18n-placeholder="placeholderJobTitle" placeholder="CEO" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+              <input id="qrField-vcard-org" type="text" data-i18n-placeholder="placeholderOrg" placeholder="Empresa Ltda." class="input-field" style="height:2.25rem" />
+              <input id="qrField-vcard-jobtitle" type="text" data-i18n-placeholder="placeholderJobTitle" placeholder="CEO" class="input-field" style="height:2.25rem" />
             </div>
-            <input id="qrField-vcard-url" type="url" data-i18n-placeholder="placeholderWebsite" placeholder="https://empresa.com" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
-            <input id="qrField-vcard-street" type="text" data-i18n-placeholder="placeholderStreet" placeholder="Rua Exemplo, 123" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+            <input id="qrField-vcard-url" type="url" data-i18n-placeholder="placeholderWebsite" placeholder="https://empresa.com" class="input-field" style="height:2.25rem" />
+            <input id="qrField-vcard-street" type="text" data-i18n-placeholder="placeholderStreet" placeholder="Rua Exemplo, 123" class="input-field" style="height:2.25rem" />
             <div class="grid grid-cols-[1fr_5rem_3.5rem] gap-2">
-              <input id="qrField-vcard-city" type="text" data-i18n-placeholder="placeholderCity" placeholder="São Paulo" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
-              <input id="qrField-vcard-zip" type="text" data-i18n-placeholder="placeholderZip" placeholder="01310-100" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
-              <input id="qrField-vcard-country" type="text" data-i18n-placeholder="placeholderCountry" placeholder="BR" class="h-9 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+              <input id="qrField-vcard-city" type="text" data-i18n-placeholder="placeholderCity" placeholder="São Paulo" class="input-field" style="height:2.25rem" />
+              <input id="qrField-vcard-zip" type="text" data-i18n-placeholder="placeholderZip" placeholder="01310-100" class="input-field" style="height:2.25rem" />
+              <input id="qrField-vcard-country" type="text" data-i18n-placeholder="placeholderCountry" placeholder="BR" class="input-field" style="height:2.25rem" />
             </div>
           </div>
 
           <!-- Wi-Fi Panel -->
           <div id="qrTypePanel-wifi" class="qr-type-panel hidden space-y-2">
             <div class="space-y-1.5">
-              <label for="qrField-wifi-ssid" data-i18n="fieldSsid" class="block text-sm font-medium text-zinc-700">Nome da rede</label>
-              <input id="qrField-wifi-ssid" type="text" data-i18n-placeholder="placeholderSsid" placeholder="MinhaRede" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+              <label for="qrField-wifi-ssid" data-i18n="fieldSsid" class="field-label">Nome da rede</label>
+              <input id="qrField-wifi-ssid" type="text" data-i18n-placeholder="placeholderSsid" placeholder="MinhaRede" class="input-field" />
             </div>
             <div class="space-y-1.5">
-              <label for="qrField-wifi-encryption" data-i18n="fieldEncryption" class="block text-sm font-medium text-zinc-700">Criptografia</label>
-              <select id="qrField-wifi-encryption" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500">
+              <label for="qrField-wifi-encryption" data-i18n="fieldEncryption" class="field-label">Criptografia</label>
+              <select id="qrField-wifi-encryption" class="input-field">
                 <option value="WPA">WPA / WPA2</option>
                 <option value="WEP">WEP</option>
                 <option value="nopass" data-i18n="encryptionNone">Sem criptografia</option>
               </select>
             </div>
             <div id="wifiPasswordGroup" class="space-y-1.5">
-              <label for="qrField-wifi-password" data-i18n="fieldPassword" class="block text-sm font-medium text-zinc-700">Senha</label>
-              <input id="qrField-wifi-password" type="password" data-i18n-placeholder="placeholderPassword" placeholder="Senha" class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500" />
+              <label for="qrField-wifi-password" data-i18n="fieldPassword" class="field-label">Senha</label>
+              <input id="qrField-wifi-password" type="password" data-i18n-placeholder="placeholderPassword" placeholder="Senha" class="input-field" />
             </div>
             <label class="flex cursor-pointer items-center gap-2">
-              <input id="qrField-wifi-hidden" type="checkbox" class="h-4 w-4 accent-zinc-900" />
-              <span data-i18n="fieldHidden" class="text-sm text-zinc-700">Rede oculta</span>
+              <input id="qrField-wifi-hidden" type="checkbox" />
+              <span data-i18n="fieldHidden" class="text-sm" style="color: var(--color-text-secondary);">Rede oculta</span>
             </label>
           </div>
 
-          <div class="space-y-2">
-            <label
-              for="logoInput"
-              data-i18n="logoLabel"
-              class="block text-sm font-medium text-zinc-700"
-              >Logo opcional</label
-            >
-            <input
-              id="logoInput"
-              type="file"
-              accept="image/*"
-              class="block w-full cursor-pointer rounded-md border border-zinc-300 bg-white text-sm text-zinc-600 file:mr-3 file:rounded-md file:border-0 file:bg-zinc-900 file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-zinc-700"
-            />
-            <button
-              id="presetLogosButton"
-              type="button"
-              data-i18n="presetLogosButton"
-              class="mt-1 flex h-9 w-full items-center justify-center rounded-md border border-dashed border-zinc-300 bg-white text-xs font-medium text-zinc-600 transition hover:border-zinc-400 hover:bg-zinc-50"
-            >
+          <!-- Logo section -->
+          <div class="divider space-y-2">
+            <label for="logoInput" data-i18n="logoLabel" class="field-label">Logo opcional</label>
+            <div class="overflow-hidden rounded-lg" style="border: 0.5px solid rgba(74,158,255,0.2);">
+              <input id="logoInput" type="file" accept="image/*" class="file-input" />
+            </div>
+            <button id="presetLogosButton" type="button" data-i18n="presetLogosButton" class="choose-logo-btn">
               Escolher logo
             </button>
-            <p
-              id="logoFileName"
-              data-i18n="logoFileDefault"
-              class="text-xs text-zinc-500"
-            >
+            <p id="logoFileName" data-i18n="logoFileDefault" class="text-xs" style="color: var(--color-text-muted);">
               Nenhuma logo selecionada.
             </p>
           </div>
 
+          <!-- Size controls -->
           <div class="grid gap-4 sm:grid-cols-2">
             <div class="space-y-2">
-              <label
-                for="logoScale"
-                data-i18n="logoSizeLabel"
-                class="block text-sm font-medium text-zinc-700"
-                >Tamanho da logo</label
-              >
-              <input
-                id="logoScale"
-                type="range"
-                min="12"
-                max="32"
-                value="22"
-                class="w-full accent-zinc-900"
-              />
-              <p class="text-xs text-zinc-500">
+              <label for="logoScale" data-i18n="logoSizeLabel" class="field-label">Tamanho da logo</label>
+              <input id="logoScale" type="range" min="12" max="32" value="22" />
+              <p class="text-xs" style="color: var(--color-text-muted);">
                 <span id="logoScaleValue">22</span><span id="logoScaleSuffix">% do QR</span>
               </p>
             </div>
-
             <div class="space-y-2">
-              <label
-                for="logoPadding"
-                data-i18n="logoPaddingLabel"
-                class="block text-sm font-medium text-zinc-700"
-                >Margem branca</label
-              >
-              <input
-                id="logoPadding"
-                type="range"
-                min="2"
-                max="9"
-                value="5"
-                class="w-full accent-zinc-900"
-              />
-              <p class="text-xs text-zinc-500">
+              <label for="logoPadding" data-i18n="logoPaddingLabel" class="field-label">Margem branca</label>
+              <input id="logoPadding" type="range" min="2" max="9" value="5" />
+              <p class="text-xs" style="color: var(--color-text-muted);">
                 <span id="logoPaddingValue">5</span><span id="logoPaddingSuffix">% do QR</span>
               </p>
             </div>
           </div>
 
+          <!-- Color controls -->
           <div class="grid gap-4 sm:grid-cols-2">
             <div class="space-y-2">
-              <label
-                for="qrColorDark"
-                data-i18n="qrColorDarkLabel"
-                class="block text-sm font-medium text-zinc-700"
-                >Cor do QR</label
-              >
-              <input
-                id="qrColorDark"
-                type="color"
-                value="#0f172a"
-                class="h-10 w-full cursor-pointer rounded-md border border-zinc-300 bg-white p-1"
-              />
+              <label for="qrColorDark" data-i18n="qrColorDarkLabel" class="field-label">Cor do QR</label>
+              <input id="qrColorDark" type="color" value="#0f172a" />
             </div>
             <div class="space-y-2">
-              <label
-                for="qrColorLight"
-                data-i18n="qrColorLightLabel"
-                class="block text-sm font-medium text-zinc-700"
-                >Cor do fundo</label
-              >
-              <input
-                id="qrColorLight"
-                type="color"
-                value="#ffffff"
-                class="h-10 w-full cursor-pointer rounded-md border border-zinc-300 bg-white p-1"
-              />
+              <label for="qrColorLight" data-i18n="qrColorLightLabel" class="field-label">Cor do fundo</label>
+              <input id="qrColorLight" type="color" value="#ffffff" />
             </div>
           </div>
 
-          <div class="space-y-3">
+          <!-- Frame section -->
+          <div class="divider space-y-3">
             <label class="flex cursor-pointer items-center gap-2">
-              <input id="frameEnabled" type="checkbox" class="h-4 w-4 accent-zinc-900" />
-              <span data-i18n="frameLabel" class="text-sm font-medium text-zinc-700">Adicionar frame</span>
+              <input id="frameEnabled" type="checkbox" />
+              <span data-i18n="frameLabel" class="text-sm font-medium" style="color: var(--color-text-primary);">Adicionar frame</span>
             </label>
             <div id="frameOptions" class="hidden space-y-3">
               <div class="space-y-1.5">
-                <label for="frameText" data-i18n="frameTextLabel" class="block text-sm font-medium text-zinc-700">Texto do frame</label>
+                <label for="frameText" data-i18n="frameTextLabel" class="field-label">Texto do frame</label>
                 <input
                   id="frameText"
                   type="text"
                   maxlength="50"
                   data-i18n-placeholder="frameTextPlaceholder"
                   placeholder="exemplo"
-                  class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"
+                  class="input-field"
                 />
-                <p id="frameTextCharCounter" class="text-xs text-right tabular-nums text-zinc-400">0/50</p>
+                <p id="frameTextCharCounter" class="text-xs text-right tabular-nums" style="color: var(--color-text-muted);">0/50</p>
               </div>
               <div class="grid grid-cols-2 gap-3">
                 <div class="space-y-1.5">
-                  <label for="frameColor" data-i18n="frameColorLabel" class="block text-sm font-medium text-zinc-700">Cor do frame</label>
-                  <input
-                    id="frameColor"
-                    type="color"
-                    value="#000000"
-                    class="h-10 w-full cursor-pointer rounded-md border border-zinc-300 bg-white p-1"
-                  />
+                  <label for="frameColor" data-i18n="frameColorLabel" class="field-label">Cor do frame</label>
+                  <input id="frameColor" type="color" value="#000000" />
                 </div>
                 <div class="space-y-1.5">
-                  <label for="frameTextColor" data-i18n="frameTextColorLabel" class="block text-sm font-medium text-zinc-700">Cor do texto</label>
-                  <input
-                    id="frameTextColor"
-                    type="color"
-                    value="#ffffff"
-                    class="h-10 w-full cursor-pointer rounded-md border border-zinc-300 bg-white p-1"
-                  />
+                  <label for="frameTextColor" data-i18n="frameTextColorLabel" class="field-label">Cor do texto</label>
+                  <input id="frameTextColor" type="color" value="#ffffff" />
                 </div>
               </div>
             </div>
           </div>
 
+          <!-- QR name -->
           <div class="space-y-2">
-            <label
-              for="qrName"
-              data-i18n="qrNameLabel"
-              class="block text-sm font-medium text-zinc-700"
-              >Nome (opcional)</label
-            >
+            <label for="qrName" data-i18n="qrNameLabel" class="field-label">Nome (opcional)</label>
             <input
               id="qrName"
               type="text"
               data-i18n-placeholder="qrNamePlaceholder"
               placeholder="Ex: Cardápio do restaurante"
-              class="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"
+              class="input-field"
             />
           </div>
 
+          <!-- Action buttons -->
           <div class="grid gap-3 sm:grid-cols-2">
-            <button
-              id="generateButton"
-              type="button"
-              class="inline-flex h-10 items-center justify-center rounded-md bg-zinc-900 px-4 text-sm font-medium text-white transition hover:bg-zinc-700 disabled:cursor-not-allowed disabled:bg-zinc-400"
-            >
-              <span
-                id="generateButtonLabel"
-                data-i18n="generateButtonIdle"
-                >Gerar QR Code</span
-              >
+            <button id="generateButton" type="button" class="btn-primary">
+              <span id="generateButtonLabel" data-i18n="generateButtonIdle">Gerar QR Code</span>
             </button>
-            <button
-              id="downloadButton"
-              type="button"
-              disabled
-              class="inline-flex h-10 items-center justify-center rounded-md border border-zinc-300 bg-white px-4 text-sm font-medium text-zinc-900 transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:text-zinc-400"
-              data-i18n="downloadButton"
-            >
+            <button id="downloadButton" type="button" disabled class="btn-secondary" data-i18n="downloadButton">
               Baixar PNG
             </button>
           </div>
 
-          <button
-            id="historyButton"
-            type="button"
-            data-i18n="historyButton"
-            class="inline-flex h-10 w-full items-center justify-center rounded-md border border-zinc-300 bg-white px-4 text-sm font-medium text-zinc-900 transition hover:bg-zinc-100"
-          >
+          <button id="historyButton" type="button" data-i18n="historyButton" class="btn-secondary">
             Histórico
           </button>
 
           <p
             id="statusMessage"
             aria-live="polite"
-            class="min-h-12 rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-700"
+            class="min-h-12 rounded-lg px-3 py-2 text-sm font-medium transition status-info"
           ></p>
         </div>
 
-        <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm sm:p-7">
-          <p
-            data-i18n="previewBadge"
-            class="mb-4 inline-flex rounded-md border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs font-medium uppercase tracking-wide text-zinc-600"
-          >
-            preview
-          </p>
-          <div
-            class="flex min-h-[390px] flex-col items-center justify-center gap-5 rounded-xl border border-dashed border-zinc-300 bg-zinc-50 px-4 py-8"
-          >
-            <div
-              id="previewFrame"
-              class="w-full max-w-[520px] rounded-xl border border-zinc-200 bg-white p-4 transition-transform duration-300"
-            >
+        <!-- Preview panel -->
+        <div class="card p-5 sm:p-7">
+          <p data-i18n="previewBadge" class="preview-badge mb-4">preview</p>
+          <div class="preview-area flex min-h-[390px] flex-col items-center justify-center gap-5 px-4 py-8">
+            <div id="previewFrame" class="preview-frame">
               <canvas
                 id="qrCanvas"
                 width="512"
                 height="512"
-                class="aspect-square w-full rounded-lg border border-zinc-200 bg-white p-2"
+                class="aspect-square w-full rounded-lg"
+                style="border: 0.5px solid rgba(74,158,255,0.08); background: #ffffff;"
               ></canvas>
             </div>
             <p
               data-i18n="cameraTip"
-              class="max-w-lg text-center text-xs text-zinc-500"
+              class="max-w-lg text-center text-xs"
+              style="color: var(--color-text-muted);"
             >
               Dica: use URL completa com https:// para melhorar a leitura em aplicativos de câmera.
             </p>
@@ -641,105 +882,58 @@
         </div>
       </section>
 
-      <footer
-        class="mt-6 flex flex-col gap-2 border-t border-zinc-200 pt-4 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between"
-      >
-        <p class="font-medium uppercase tracking-wide">free qrcode generator</p>
-        <p data-i18n="footerText">Visual renovado para transmitir mais personalidade sem perder simplicidade.</p>
+      <footer class="site-footer">
+        <div class="flex items-center gap-2">
+          <img src="assets/brand/almeidaoffsec_logo_light.svg" alt="almeidaoffsec" class="h-5 w-auto opacity-50" />
+          <span class="text-xs font-medium uppercase tracking-wider" style="color: var(--color-text-muted);">free qrcode generator</span>
+        </div>
+        <p data-i18n="footerText" class="text-xs" style="color: var(--color-text-muted);">
+          Made with luv by @yurirxmos · updated by @almeidaoffsec
+        </p>
       </footer>
     </main>
-    <div
-      id="historyModal"
-      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4"
-    >
-      <div
-        class="flex w-full max-w-lg flex-col rounded-xl bg-white shadow-xl"
-        style="max-height: 80vh"
-      >
-        <header class="flex shrink-0 items-center justify-between border-b border-zinc-200 px-5 py-4">
-          <h2
-            data-i18n="historyModalTitle"
-            class="text-base font-semibold text-zinc-900"
-          ></h2>
+
+    <!-- History Modal -->
+    <div id="historyModal" class="modal-backdrop hidden items-center justify-center">
+      <div class="modal-panel max-w-lg" style="max-height: 80vh;">
+        <div class="modal-header">
+          <h2 data-i18n="historyModalTitle" class="text-base font-semibold" style="color: var(--color-text-primary);"></h2>
           <div class="flex items-center gap-2">
-            <button
-              id="clearHistoryButton"
-              type="button"
-              data-i18n="historyClearButton"
-              class="rounded-md px-3 py-1.5 text-xs font-medium text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-700"
-            ></button>
-            <button
-              id="closeHistoryButton"
-              type="button"
-              data-i18n="historyCloseButton"
-              class="rounded-md px-3 py-1.5 text-xs font-medium text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-700"
-            ></button>
+            <button id="clearHistoryButton" type="button" data-i18n="historyClearButton" class="btn-ghost"></button>
+            <button id="closeHistoryButton" type="button" data-i18n="historyCloseButton" class="btn-ghost"></button>
           </div>
-        </header>
-        <div id="historyList" class="overflow-y-auto px-5 py-3"></div>
-        <footer class="flex shrink-0 items-center justify-between gap-3 border-t border-zinc-200 px-5 py-3">
-          <p id="historyModalStatus" class="text-xs text-zinc-400"></p>
+        </div>
+        <div id="historyList" class="overflow-y-auto px-6 py-3"></div>
+        <div class="modal-footer-bar">
+          <p id="historyModalStatus" class="text-xs" style="color: var(--color-text-muted);"></p>
           <div class="flex items-center gap-2">
-            <button
-              id="importHistoryButton"
-              type="button"
-              data-i18n="historyImportButton"
-              class="rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100"
-            ></button>
-            <button
-              id="exportHistoryButton"
-              type="button"
-              data-i18n="historyExportButton"
-              class="rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100"
-            ></button>
+            <button id="importHistoryButton" type="button" data-i18n="historyImportButton" class="btn-ghost"></button>
+            <button id="exportHistoryButton" type="button" data-i18n="historyExportButton" class="btn-ghost"></button>
           </div>
-        </footer>
+        </div>
       </div>
     </div>
+
     <input id="importFileInput" type="file" accept=".json" class="hidden" />
-    <div
-      id="manualModal"
-      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4"
-    >
-      <div
-        class="flex w-full max-w-lg flex-col rounded-xl bg-white shadow-xl"
-        style="max-height: 80vh"
-      >
-        <header class="flex shrink-0 items-center justify-between border-b border-zinc-200 px-5 py-4">
-          <h2
-            data-i18n="manualTitle"
-            class="text-base font-semibold text-zinc-900"
-          >Manual de uso</h2>
-          <button
-            id="closeManualButton"
-            type="button"
-            data-i18n="historyCloseButton"
-            class="rounded-md px-3 py-1.5 text-xs font-medium text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-700"
-          >Fechar</button>
-        </header>
-        <div id="manualContent" class="overflow-y-auto divide-y divide-zinc-100 px-5 py-1"></div>
+
+    <!-- Manual Modal -->
+    <div id="manualModal" class="modal-backdrop hidden items-center justify-center">
+      <div class="modal-panel max-w-lg" style="max-height: 80vh;">
+        <div class="modal-header">
+          <h2 data-i18n="manualTitle" class="text-base font-semibold" style="color: var(--color-text-primary);">Manual de uso</h2>
+          <button id="closeManualButton" type="button" data-i18n="historyCloseButton" class="btn-ghost">Fechar</button>
+        </div>
+        <div id="manualContent" class="overflow-y-auto px-6 py-1"></div>
       </div>
     </div>
-    <div
-      id="presetLogosModal"
-      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4"
-    >
-      <div
-        class="flex w-full max-w-sm flex-col rounded-xl bg-white shadow-xl"
-        style="max-height: 70vh"
-      >
-        <header class="flex shrink-0 items-center justify-between border-b border-zinc-200 px-5 py-4">
-          <h2
-            data-i18n="presetLogosTitle"
-            class="text-base font-semibold text-zinc-900"
-          >Logos disponíveis</h2>
-          <button
-            id="closePresetLogosButton"
-            type="button"
-            data-i18n="historyCloseButton"
-            class="rounded-md px-3 py-1.5 text-xs font-medium text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-700"
-          >Fechar</button>
-        </header>
+
+    <!-- Preset Logos Modal -->
+    <div id="presetLogosModal" class="modal-backdrop hidden items-center justify-center">
+      <div class="modal-panel max-w-sm" style="max-height: 70vh;">
+        <div class="modal-header">
+          <h2 data-i18n="presetLogosTitle" class="text-base font-semibold" style="color: var(--color-text-primary);">Logos disponíveis</h2>
+          <button id="closePresetLogosButton" type="button" data-i18n="historyCloseButton" class="btn-ghost">Fechar</button>
+        </div>
         <div id="presetLogosList" class="overflow-y-auto p-4"></div>
       </div>
     </div>
