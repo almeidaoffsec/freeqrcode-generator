@@ -37,6 +37,10 @@ const closePresetLogosButton = document.getElementById("closePresetLogosButton")
 const manualButton = document.getElementById("manualButton");
 const manualModal = document.getElementById("manualModal");
 const closeManualButton = document.getElementById("closeManualButton");
+const footerManualButton = document.getElementById("footerManualButton");
+const footerHistoryButton = document.getElementById("footerHistoryButton");
+const headerMenuToggle = document.getElementById("headerMenuToggle");
+const headerMenuPanel = document.getElementById("headerMenuPanel");
 
 const LANGUAGE_STORAGE_KEY = "free-qrcode-language";
 const HISTORY_STORAGE_KEY = "free-qrcode-history";
@@ -190,6 +194,14 @@ const TRANSLATIONS = {
       previewBadge: "preview",
       cameraTip: "Dica: use URL completa com https:// para melhorar a leitura em aplicativos de câmera.",
       footerText: "Made with luv by @yurirxmos · updated by @almeidaoffsec",
+      footerBrandDescription: "Gerador de QR Code gratuito com logo, frame e histórico local. Mantido por @almeidaoffsec.",
+      footerNavLabel: "Navegação",
+      footerNavTop: "Início",
+      footerNavManual: "Manual",
+      footerNavHistory: "Histórico",
+      footerNavSource: "Código-fonte",
+      footerSocialLabel: "Redes",
+      footerStatus: "gerador online",
       qrColorDarkLabel: "Cor do QR",
       qrColorLightLabel: "Cor do fundo",
       historyPreview: "Preview",
@@ -326,6 +338,14 @@ const TRANSLATIONS = {
       previewBadge: "preview",
       cameraTip: "Tip: use a full URL with https:// to improve scanning on camera apps.",
       footerText: "Made with luv by @yurirxmos · updated by @almeidaoffsec",
+      footerBrandDescription: "Free QR Code generator with logo, frame, and local history. Maintained by @almeidaoffsec.",
+      footerNavLabel: "Navigation",
+      footerNavTop: "Home",
+      footerNavManual: "Manual",
+      footerNavHistory: "History",
+      footerNavSource: "Source code",
+      footerSocialLabel: "Social",
+      footerStatus: "generator online",
       qrColorDarkLabel: "QR color",
       qrColorLightLabel: "Background color",
       historyPreview: "Preview",
@@ -1645,6 +1665,7 @@ languageButtons.forEach((button) => {
     }
 
     applyLanguage(selectedLanguage);
+    closeHeaderMenu();
   });
 });
 
@@ -1788,12 +1809,55 @@ const populateCountryCodeSelects = () => {
   });
 };
 
+const closeHeaderMenu = () => {
+  if (!headerMenuPanel || !headerMenuToggle) {
+    return;
+  }
+  headerMenuPanel.classList.add("hidden");
+  headerMenuToggle.setAttribute("aria-expanded", "false");
+};
+
+if (headerMenuToggle && headerMenuPanel) {
+  headerMenuToggle.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const isOpen = !headerMenuPanel.classList.contains("hidden");
+    headerMenuPanel.classList.toggle("hidden", isOpen);
+    headerMenuToggle.setAttribute("aria-expanded", isOpen ? "false" : "true");
+  });
+
+  document.addEventListener("click", (event) => {
+    if (
+      !headerMenuPanel.contains(event.target) &&
+      !headerMenuToggle.contains(event.target)
+    ) {
+      closeHeaderMenu();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeHeaderMenu();
+    }
+  });
+}
+
 if (manualButton) {
-  manualButton.addEventListener("click", openManualModal);
+  manualButton.addEventListener("click", () => {
+    openManualModal();
+    closeHeaderMenu();
+  });
 }
 
 if (closeManualButton) {
   closeManualButton.addEventListener("click", closeManualModal);
+}
+
+if (footerManualButton) {
+  footerManualButton.addEventListener("click", openManualModal);
+}
+
+if (footerHistoryButton) {
+  footerHistoryButton.addEventListener("click", openHistoryModal);
 }
 
 if (manualModal) {

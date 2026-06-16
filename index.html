@@ -520,28 +520,194 @@
       }
       .manual-section:last-child { border-bottom: none; }
 
-      .site-footer {
-        border-top: 0.5px solid rgba(74, 158, 255, 0.08);
-        padding-top: 1rem;
-        margin-top: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-      @media (min-width: 640px) {
-        .site-footer { flex-direction: row; align-items: center; justify-content: space-between; }
+      /* ============ HEADER ============ */
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(10, 14, 26, 0.85);
+        backdrop-filter: blur(10px);
+        border-bottom: 0.5px solid rgba(74, 158, 255, 0.14);
       }
 
-      .brand-logo {
-        height: 56px;
-        width: auto;
-        max-width: 52%;
+      .header-inner {
+        max-width: 72rem;
+        margin: 0 auto;
+        padding: 0.875rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
       }
       @media (min-width: 640px) {
-        .brand-logo { height: 80px; max-width: none; }
+        .header-inner { padding: 0.875rem 1.5rem; }
       }
-      @media (min-width: 1024px) {
-        .brand-logo { height: 128px; }
+
+      .header-logo {
+        height: 52px;
+        width: auto;
+        flex-shrink: 0;
+      }
+      @media (min-width: 640px) {
+        .header-logo { height: 64px; }
+      }
+
+      .header-controls { position: relative; display: flex; align-items: center; gap: 0.5rem; }
+
+      .nav-toggle-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 8px;
+        border: 0.5px solid rgba(74, 158, 255, 0.3);
+        background: transparent;
+        font-size: 1.1rem;
+        line-height: 1;
+        color: var(--color-text-primary);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+      .nav-toggle-btn:hover {
+        background: rgba(74, 158, 255, 0.08);
+        border-color: rgba(74, 158, 255, 0.6);
+        color: var(--color-scan-blue);
+      }
+
+      .header-menu-panel {
+        position: absolute;
+        top: calc(100% + 0.5rem);
+        right: 0;
+        z-index: 110;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 10px;
+        border: 0.5px solid rgba(74, 158, 255, 0.2);
+        background: var(--color-deep-navy);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+      }
+
+      /* ============ FOOTER ============ */
+
+      .site-footer {
+        border-top: 0.5px solid rgba(74, 158, 255, 0.08);
+        padding: 3rem 0 0;
+        margin-top: 3rem;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr;
+        gap: 2rem;
+        padding-bottom: 2.5rem;
+      }
+      @media (max-width: 768px) {
+        .footer-grid { grid-template-columns: 1fr; gap: 1.75rem; }
+      }
+
+      .footer-brand-logo { height: 30px; width: auto; margin-bottom: 0.875rem; }
+
+      .footer-brand p {
+        font-size: 0.85rem;
+        color: var(--color-text-secondary);
+        line-height: 1.6;
+        max-width: 320px;
+      }
+
+      .footer-col-label {
+        font-family: var(--font-body);
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-text-secondary);
+        margin-bottom: 1rem;
+      }
+
+      .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+
+      .footer-col a, .footer-col button {
+        font-size: 0.85rem;
+        color: var(--color-text-primary);
+        background: none;
+        border: none;
+        padding: 0;
+        text-align: left;
+        cursor: pointer;
+        font-family: var(--font-body);
+        text-decoration: none;
+        transition: color var(--transition-fast);
+      }
+      .footer-col a:hover, .footer-col button:hover { color: var(--color-terminal); }
+
+      .social-row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+      .social-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.85rem;
+        border-radius: 7px;
+        border: 0.5px solid rgba(74, 158, 255, 0.14);
+        background: rgba(255, 255, 255, 0.02);
+        text-decoration: none;
+        color: var(--color-text-secondary);
+        font-size: 0.78rem;
+        font-weight: 500;
+        transition: border-color var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
+      }
+      .social-link svg { width: 15px; height: 15px; flex-shrink: 0; }
+      .social-link:hover {
+        color: var(--color-terminal);
+        border-color: rgba(0, 229, 200, 0.4);
+        background: rgba(0, 229, 200, 0.06);
+      }
+
+      .footer-bottom {
+        border-top: 0.5px solid rgba(74, 158, 255, 0.08);
+        padding: 1.25rem 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .footer-bottom .copy {
+        font-family: var(--font-code);
+        font-size: 0.72rem;
+        color: var(--color-text-muted);
+      }
+
+      .status-pill {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-code);
+        font-size: 0.72rem;
+        color: var(--color-text-secondary);
+      }
+
+      .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--color-access-ok);
+        box-shadow: 0 0 6px rgba(57, 211, 83, 0.7);
+        animation: status-pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes status-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+      }
+
+      @media (max-width: 768px) {
+        .footer-bottom { flex-direction: column; align-items: flex-start; }
       }
 
       ::-webkit-scrollbar { width: 4px; }
@@ -549,20 +715,28 @@
       ::-webkit-scrollbar-thumb { background: rgba(74, 158, 255, 0.2); border-radius: 2px; }
       ::-webkit-scrollbar-thumb:hover { background: rgba(74, 158, 255, 0.4); }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
     <script defer src="./script.js"></script>
   </head>
   <body class="min-h-screen antialiased">
-    <main class="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
-      <header class="mb-8">
-        <!-- Top bar: brand left, controls right -->
-        <div class="flex items-center justify-between pb-5 mb-6" style="border-bottom: 0.5px solid rgba(74,158,255,0.1);">
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="#top" aria-label="almeidaoffsec">
           <img
-            src="assets/brand/almeidaoffsec_logo_light.svg"
+            src="assets/brand/almeidaoffsec_logo_light_H.svg"
             alt="almeidaoffsec"
-            class="brand-logo"
+            class="header-logo"
           />
-          <div class="flex items-center gap-2">
+        </a>
+        <nav class="header-controls" aria-label="Controles">
+          <button
+            id="headerMenuToggle"
+            type="button"
+            class="nav-toggle-btn"
+            aria-label="Abrir menu"
+            aria-expanded="false"
+            aria-controls="headerMenuPanel"
+          >☰</button>
+          <div id="headerMenuPanel" class="header-menu-panel hidden">
             <button
               id="manualButton"
               type="button"
@@ -604,24 +778,25 @@
               </button>
             </div>
           </div>
-        </div>
-        <!-- Page title -->
-        <div class="space-y-1.5">
-          <h1
-            data-i18n="heroTitle"
-            class="max-w-2xl text-2xl font-bold tracking-tight sm:text-3xl"
-          >
-            Crie um QR Code com identidade visual forte.
-          </h1>
-          <p
-            data-i18n="heroDescription"
-            class="max-w-2xl text-sm"
-            style="color: var(--color-text-secondary);"
-          >
-            Digite o conteúdo, aplique sua marca no centro e exporte em PNG pronto para impressão, cardápio, embalagem ou campanha.
-          </p>
-        </div>
-      </header>
+        </nav>
+      </div>
+    </header>
+    <main id="top" class="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+      <div class="mb-8 space-y-1.5">
+        <h1
+          data-i18n="heroTitle"
+          class="max-w-2xl text-2xl font-bold tracking-tight sm:text-3xl"
+        >
+          Crie um QR Code com identidade visual forte.
+        </h1>
+        <p
+          data-i18n="heroDescription"
+          class="max-w-2xl text-sm"
+          style="color: var(--color-text-secondary);"
+        >
+          Digite o conteúdo, aplique sua marca no centro e exporte em PNG pronto para impressão, cardápio, embalagem ou campanha.
+        </p>
+      </div>
 
       <section class="grid gap-6 lg:grid-cols-[380px_1fr]">
         <!-- Control panel -->
@@ -882,16 +1057,66 @@
         </div>
       </section>
 
-      <footer class="site-footer">
-        <div class="flex items-center gap-2">
-          <img src="assets/brand/almeidaoffsec_logo_light.svg" alt="almeidaoffsec" class="h-5 w-auto opacity-50" />
-          <span class="text-xs font-medium uppercase tracking-wider" style="color: var(--color-text-muted);">free qrcode generator</span>
-        </div>
-        <p data-i18n="footerText" class="text-xs" style="color: var(--color-text-muted);">
-          Made with luv by @yurirxmos · updated by @almeidaoffsec
-        </p>
-      </footer>
     </main>
+
+    <footer class="site-footer">
+      <div class="mx-auto w-full max-w-6xl px-4 sm:px-6">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <img src="assets/brand/Logo.svg" alt="almeidaoffsec" class="footer-brand-logo" />
+            <p data-i18n="footerBrandDescription">
+              Gerador de QR Code gratuito com logo, frame e histórico local. Mantido por @almeidaoffsec.
+            </p>
+          </div>
+
+          <div class="footer-col">
+            <p data-i18n="footerNavLabel" class="footer-col-label">Navegação</p>
+            <ul>
+              <li><a href="#top" data-i18n="footerNavTop">Início</a></li>
+              <li><button id="footerManualButton" type="button" data-i18n="footerNavManual">Manual</button></li>
+              <li><button id="footerHistoryButton" type="button" data-i18n="footerNavHistory">Histórico</button></li>
+              <li><a href="https://github.com/almeidaoffsec/freeqrcode-generator" target="_blank" rel="noopener noreferrer" data-i18n="footerNavSource">Código-fonte</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <p data-i18n="footerSocialLabel" class="footer-col-label">Redes</p>
+            <div class="social-row">
+              <a class="social-link" href="https://instagram.com/almeidaoffsec" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="3.5"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none"/></svg>
+                Instagram
+              </a>
+              <a class="social-link" href="https://linkedin.com/in/almeidaoffsec" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="7.5" y1="9.5" x2="7.5" y2="16.5"/><circle cx="7.5" cy="6.7" r="0.4" fill="currentColor" stroke="none"/><path d="M11.5 16.5v-4.2c0-1.4 1-2.3 2.3-2.3s2.2.9 2.2 2.3v4.2"/><line x1="11.5" y1="9.5" x2="11.5" y2="16.5"/></svg>
+                LinkedIn
+              </a>
+              <a class="social-link" href="https://github.com/almeidaoffsec" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a9 9 0 0 0-2.8 17.6c.4.1.6-.2.6-.4v-1.6c-2.5.5-3-1.1-3-1.1-.4-1-1-1.3-1-1.3-.9-.6 0-.6 0-.6 1 .1 1.5 1 1.5 1 .8 1.5 2.2 1 2.8.8.1-.6.3-1 .6-1.3-2-.2-4.1-1-4.1-4.4 0-1 .3-1.7.9-2.4-.1-.2-.4-1.1.1-2.3 0 0 .8-.3 2.5 1a8.6 8.6 0 0 1 4.6 0c1.8-1.2 2.5-1 2.5-1 .5 1.2.2 2.1.1 2.3.6.7.9 1.5.9 2.4 0 3.4-2.1 4.2-4.1 4.4.3.3.6.8.6 1.7v2.5c0 .2.2.5.6.4A9 9 0 0 0 12 3z"/></svg>
+                GitHub
+              </a>
+              <a class="social-link" href="https://tiktok.com/@almeidaoffsec" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 4c.3 2 1.7 3.6 4 3.9V11c-1.5 0-2.9-.4-4-1.2v5.6a5 5 0 1 1-4-4.9v3a2 2 0 1 0 2 2V4h2z"/></svg>
+                TikTok
+              </a>
+              <a class="social-link" href="https://tryhackme.com/p/almeidaoffsec" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 4 7v5c0 5 3.5 7.7 8 9 4.5-1.3 8-4 8-9V7l-8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+                TryHackMe
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p data-i18n="footerText" class="copy">
+            Made with luv by @yurirxmos · updated by @almeidaoffsec
+          </p>
+          <div class="status-pill">
+            <span class="status-dot"></span>
+            <span data-i18n="footerStatus">gerador online</span>
+          </div>
+        </div>
+      </div>
+    </footer>
 
     <!-- History Modal -->
     <div id="historyModal" class="modal-backdrop hidden items-center justify-center">
