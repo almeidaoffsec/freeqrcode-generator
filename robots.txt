@@ -1,4 +1,2 @@
 User-agent: *
 Allow: /
-
-Sitemap: http://freeqrcode.rxmos.dev.br/sitemap.xml

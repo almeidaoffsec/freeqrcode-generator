@@ -1,69 +1,60 @@
 # Free QRCode Generator
 
-<p align="center">
-  <img src="https://i.imgur.com/u389in4h.jpg" alt="Free QRCode Generator banner" />
-</p>
+Gerador de QR Code gratuito, sem cadastro e sem dependências de build. Roda diretamente no browser.
 
-A free, fast, no-sign-up QR Code generator with optional center logo and PNG export.
-
-## Live App (Ready to Use)
-
-The project is deployed and ready to use at:
-
-`http://freeqrcode.rxmos.dev.br/`
-
-## Overview
-
-This project is a static web application to generate QR Codes with a custom visual identity. You provide text or a URL, optionally add a center logo, adjust logo size and white padding, then download a high-quality result.
+**Live:** [freeqr.almeidaoffsec.com](https://freeqr.almeidaoffsec.com)
 
 ## Features
 
-- Browser-based QR Code generation
-- Optional logo upload applied in the QR center
-- Logo size and white padding controls via sliders
-- One-click PNG download
-- Bilingual interface (PT-BR and EN-US)
-- Automatic CDN fallback for the QR Code library
+- **7 tipos de QR Code:** Link, Texto, E-mail, Chamada, WhatsApp, V-Card, Wi-Fi
+- **Logo central:** upload de imagem própria ou seleção de logos pré-definidas (redes sociais e marcas)
+- **Customização visual:** cor do QR (escuro e claro) + frame opcional com texto personalizado
+- **Controles de logo:** tamanho e padding via slider
+- **Histórico local:** gerados salvos no `localStorage` com preview, download e clone
+- **Download em PNG** de alta resolução (512×512)
+- **Interface bilíngue:** PT-BR e EN-US
+- **Zero dependência de rede:** biblioteca QR servida localmente com fallback para CDN
 
 ## Tech Stack
 
-- HTML5
-- JavaScript (Vanilla)
-- Tailwind CSS (via CDN)
-- [qrcode](https://github.com/soldair/node-qrcode) (via CDN)
+- HTML5 + JavaScript vanilla (sem framework, sem bundler)
+- Tailwind CSS via CDN
+- [qrcode@1.5.1](https://github.com/soldair/node-qrcode) — bundled localmente em `qrcode.min.js`
 
-## Run Locally
-
-Because this is a static project, you can open `index.html` directly in your browser.
-
-Optionally, run a local server:
+## Rodar Localmente
 
 ```bash
-# Python 3
 python3 -m http.server 5500
+# abrir http://localhost:5500
 ```
 
-Then open:
+Não há instalação, build step ou dependências. Basta servir os arquivos estáticos.
 
-`http://localhost:5500`
+## Estrutura
 
-## How to Use
-
-1. Fill in the content field with a URL or text.
-2. (Optional) Upload a logo image.
-3. Adjust logo size and white padding.
-4. Click **Generate QR Code**.
-5. Click **Download PNG** to export.
-
-## Project Structure
-
-```text
+```
 .
-├── index.html
-├── script.js
-└── README.md
+├── index.html        # markup, Tailwind config e script tags
+├── script.js         # toda a lógica da aplicação
+├── style.css         # estilos customizados
+├── qrcode.min.js     # biblioteca QR bundled (qrcode@1.5.1)
+├── favicon.svg
+├── robots.txt
+├── CNAME
+├── assets/brand/     # assets de marca
+└── logos/            # logos pré-definidas para o QR
 ```
 
-## License
+## Deploy
 
-This project is available for free use.
+Copie os arquivos estáticos para qualquer servidor ou CDN:
+
+```
+index.html  script.js  qrcode.min.js  style.css  favicon.svg  robots.txt
+```
+
+Atualizar o `qrcode.min.js`:
+
+```bash
+curl -o qrcode.min.js https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js
+```

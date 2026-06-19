@@ -39,4 +39,4 @@ Two files contain all logic:
 
 ## Deployment
 
-Static files only — deploy by copying `index.html`, `script.js`, `qrcode.min.js`, `favicon.svg`, `sitemap.xml`, and `robots.txt`. The `.nojekyll` file is present for GitHub Pages hosting.
+Static files only — deploy by copying `index.html`, `script.js`, `qrcode.min.js`, `favicon.svg`, and `robots.txt`.
