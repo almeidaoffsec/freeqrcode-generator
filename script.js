@@ -879,6 +879,8 @@ const getQrCodeRenderer = () => {
             light: lightColor,
           },
         });
+        canvas.style.width = "";
+        canvas.style.height = "";
       },
     };
   }
