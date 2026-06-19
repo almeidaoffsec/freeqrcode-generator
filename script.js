@@ -482,6 +482,7 @@ const SEO_TRANSLATIONS = {
 
 const CONTROL_LIST = [logoInput, logoScale, logoPadding].filter((element) => Boolean(element));
 const QR_CODE_SCRIPT_SOURCES = [
+  "./qrcode.min.js",
   "https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js",
   "https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.1/qrcode.min.js",
   "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js",

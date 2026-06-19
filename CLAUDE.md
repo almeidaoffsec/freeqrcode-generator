@@ -24,7 +24,7 @@ Two files contain all logic:
 
 **i18n** is self-contained: `TRANSLATIONS` and `SEO_TRANSLATIONS` objects hold all UI and SEO strings for `pt-BR` and `en-US`. `applyLanguage()` walks every `[data-i18n]` element and rewrites text content. Language priority: URL `?lang=` param → `localStorage` → `navigator.language` → default (`pt-BR`).
 
-**QR library loading** uses a CDN waterfall: `QR_CODE_SCRIPT_SOURCES` lists three CDN URLs tried in order. The library exposes two incompatible APIs (`QRCode.toCanvas` vs the legacy `new QRCode(container, ...)` constructor); `getQrCodeRenderer()` detects which one is present and returns a unified `{ render }` adapter.
+**QR library loading** uses a waterfall: `QR_CODE_SCRIPT_SOURCES` lists sources tried in order — first the local `./qrcode.min.js` (bundled copy of qrcode@1.5.1), then two CDN fallbacks, then the legacy qrcodejs as last resort. The library exposes two incompatible APIs (`QRCode.toCanvas` vs the legacy `new QRCode(container, ...)` constructor); `getQrCodeRenderer()` detects which one is present and returns a unified `{ render }` adapter.
 
 **Error handling** uses a convention of throwing `new Error("i18n:<statusKey>")` to carry localizable error keys through async call stacks without a custom error class. `getStatusKeyFromError()` unpacks these; unrecognized errors fall back to a default key.
 
@@ -39,4 +39,4 @@ Two files contain all logic:
 
 ## Deployment
 
-Static files only — deploy by copying `index.html`, `script.js`, `favicon.svg`, `sitemap.xml`, and `robots.txt`. The `.nojekyll` file is present for GitHub Pages hosting.
+Static files only — deploy by copying `index.html`, `script.js`, `qrcode.min.js`, `favicon.svg`, `sitemap.xml`, and `robots.txt`. The `.nojekyll` file is present for GitHub Pages hosting.
