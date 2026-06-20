@@ -172,6 +172,8 @@ const TRANSLATIONS = {
   "pt-BR": {
     ui: {
       badge: "studio edition · sem cadastro",
+      heroLabel: "Ferramenta",
+      heroGithub: "Ver no GitHub",
       heroTitle: "Crie um QR Code com identidade visual forte.",
       heroDescription:
         "Digite o conteúdo, aplique sua marca no centro e exporte em PNG pronto para impressão, cardápio, embalagem ou campanha.",
@@ -316,6 +318,8 @@ const TRANSLATIONS = {
   "en-US": {
     ui: {
       badge: "studio edition · no sign-up",
+      heroLabel: "Tool",
+      heroGithub: "View on GitHub",
       heroTitle: "Create a QR Code with a strong visual identity.",
       heroDescription:
         "Type your content, place your brand at the center, and export a production-ready PNG for print, menus, packaging, or campaigns.",

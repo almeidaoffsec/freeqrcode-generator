@@ -2,6 +2,25 @@
 
 main section { padding: 0; }
 
+/* ── Hero ──────────────────────────────────────────────────────────────────── */
+
+.hero h1 { font-weight: 700; }
+
+/* ── Hero: garante que .container do design-system prevaleça sobre Tailwind ── */
+
+.hero .container {
+  max-width: 1152px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Botões no hero são inline (auto-width), não full-width ────────────────────── */
+
+.hero .btn-secondary {
+  width: auto;
+  display: inline-flex;
+}
+
 /* ── Botões — overrides sobre components.css ───────────────────────────────── */
 
 .btn-primary {
