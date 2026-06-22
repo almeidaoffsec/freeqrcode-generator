@@ -105,13 +105,13 @@
     <link rel="stylesheet" href="style.css">
     <script defer src="./script.js"></script>
   </head>
-  <body class="min-h-screen antialiased" data-page="tools">
+  <body class="min-h-screen antialiased" data-page="tools" data-i18n-src="./i18n/">
 
     <div id="site-header"></div>
 
     <section class="hero">
       <div class="container">
-        <span class="label" data-i18n="heroLabel">Ferramenta</span>
+        <span class="label" data-i18n="tool.hero.label">Ferramenta</span>
         <h1 data-i18n="heroTitle">Crie um QR Code com identidade visual forte.</h1>
         <p data-i18n="heroDescription">
           Digite o conteúdo, aplique sua marca no centro e exporte em PNG pronto para impressão, cardápio, embalagem ou campanha.
@@ -138,38 +138,6 @@
           title="Manual"
           aria-label="Manual"
         >?</button>
-        <div id="languageSwitcher" class="flex items-center rounded-md">
-          <button
-            type="button"
-            data-language-button="pt-BR"
-            class="language-flag-button rounded p-1.5 transition"
-            title="Português (Brasil)"
-            aria-label="Português (Brasil)"
-          >
-            <svg viewBox="0 0 36 24" aria-hidden="true" class="h-5 w-7 rounded-sm">
-              <rect width="36" height="24" fill="#009C3B" />
-              <polygon points="18,3 31,12 18,21 5,12" fill="#FFDF00" />
-              <circle cx="18" cy="12" r="5" fill="#002776" />
-            </svg>
-          </button>
-          <button
-            type="button"
-            data-language-button="en-US"
-            class="language-flag-button rounded p-1.5 transition"
-            title="English (United States)"
-            aria-label="English (United States)"
-          >
-            <svg viewBox="0 0 19 10" aria-hidden="true" class="h-5 w-7 rounded-sm">
-              <rect width="19" height="10" fill="#B22234" />
-              <rect y="1" width="19" height="1" fill="#FFFFFF" />
-              <rect y="3" width="19" height="1" fill="#FFFFFF" />
-              <rect y="5" width="19" height="1" fill="#FFFFFF" />
-              <rect y="7" width="19" height="1" fill="#FFFFFF" />
-              <rect y="9" width="19" height="1" fill="#FFFFFF" />
-              <rect width="8" height="5.5" fill="#3C3B6E" />
-            </svg>
-          </button>
-        </div>
       </div>
       <section class="grid gap-6 lg:grid-cols-[380px_1fr]">
         <!-- Control panel -->
@@ -317,14 +285,14 @@
               <label for="logoScale" data-i18n="logoSizeLabel" class="field-label">Tamanho da logo</label>
               <input id="logoScale" type="range" min="12" max="32" value="22" />
               <p class="text-xs" style="color: var(--color-text-muted);">
-                <span id="logoScaleValue">22</span><span id="logoScaleSuffix">% do QR</span>
+                <span id="logoScaleValue">22</span><span id="logoScaleSuffix" data-i18n="logoScaleSuffix">% do QR</span>
               </p>
             </div>
             <div class="space-y-2">
               <label for="logoPadding" data-i18n="logoPaddingLabel" class="field-label">Margem branca</label>
               <input id="logoPadding" type="range" min="2" max="9" value="5" />
               <p class="text-xs" style="color: var(--color-text-muted);">
-                <span id="logoPaddingValue">5</span><span id="logoPaddingSuffix">% do QR</span>
+                <span id="logoPaddingValue">5</span><span id="logoPaddingSuffix" data-i18n="logoPaddingSuffix">% do QR</span>
               </p>
             </div>
           </div>
@@ -479,5 +447,6 @@
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/gh/almeidaoffsec/design-system@main/js/site-chrome.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/gh/almeidaoffsec/design-system@main/js/i18n.js"></script>
   </body>
 </html>

@@ -2,17 +2,14 @@ const logoInput = document.getElementById("logoInput");
 const logoFileName = document.getElementById("logoFileName");
 const logoScale = document.getElementById("logoScale");
 const logoScaleValue = document.getElementById("logoScaleValue");
-const logoScaleSuffix = document.getElementById("logoScaleSuffix");
 const logoPadding = document.getElementById("logoPadding");
 const logoPaddingValue = document.getElementById("logoPaddingValue");
-const logoPaddingSuffix = document.getElementById("logoPaddingSuffix");
 const generateButton = document.getElementById("generateButton");
 const generateButtonLabel = document.getElementById("generateButtonLabel");
 const downloadButton = document.getElementById("downloadButton");
 const statusMessage = document.getElementById("statusMessage");
 const qrCanvas = document.getElementById("qrCanvas");
 const previewFrame = document.getElementById("previewFrame");
-const languageButtons = document.querySelectorAll("[data-language-button]");
 const historyButton = document.getElementById("historyButton");
 const historyModal = document.getElementById("historyModal");
 const historyList = document.getElementById("historyList");
@@ -42,19 +39,20 @@ const footerHistoryButton = document.getElementById("footerHistoryButton");
 const headerMenuToggle = document.getElementById("headerMenuToggle");
 const headerMenuPanel = document.getElementById("headerMenuPanel");
 
-const LANGUAGE_STORAGE_KEY = "free-qrcode-language";
 const HISTORY_STORAGE_KEY = "free-qrcode-history";
-const LANGUAGE_QUERY_PARAM = "lang";
-const DEFAULT_LANGUAGE = "pt-BR";
 const DEFAULT_QR_SIZE = 512;
 const QR_TEXT_MAX_CHARS = 500;
-const APP_BASE_URL = "http://freeqrcode.rxmos.dev.br/";
 const FRAME_SIDE = 20;
 const FRAME_TOP = 20;
 const FRAME_BOTTOM = 72;
 const FRAME_OUTER_R = 24;
 const FRAME_INNER_R = 8;
 const FRAME_FONT_SIZE = 32;
+
+let i18nDict = {};
+let currentLangCode = "pt-BR";
+
+const tr = (key) => (i18nDict[key] !== undefined ? i18nDict[key] : key);
 
 const QR_TYPE_PRIMARY_FIELD = {
   link: "qrField-link-url",
@@ -168,322 +166,6 @@ const STATUS_STYLE_MAP = {
   error: "status-error",
 };
 
-const TRANSLATIONS = {
-  "pt-BR": {
-    ui: {
-      badge: "studio edition · sem cadastro",
-      heroLabel: "Ferramenta",
-      heroGithub: "Ver no GitHub",
-      heroTitle: "Crie um QR Code com identidade visual forte.",
-      heroDescription:
-        "Digite o conteúdo, aplique sua marca no centro e exporte em PNG pronto para impressão, cardápio, embalagem ou campanha.",
-      languageLabel: "Idioma",
-      creativeDirectionLabel: "direção criativa",
-      creativeDirectionTitle: "Editorial print com contraste de pôster.",
-      creativeDirectionDescription: "Tipografia expressiva, bordas marcantes e atmosfera de papel texturizado.",
-      panelBadge: "painel",
-      contentLabel: "Conteúdo",
-      contentPlaceholder: "https://seusite.com",
-      logoLabel: "Logo opcional",
-      logoFileDefault: "Nenhuma logo selecionada.",
-      logoSizeLabel: "Tamanho da logo",
-      logoScaleSuffix: "% do QR",
-      logoPaddingLabel: "Margem branca",
-      logoPaddingSuffix: "% do QR",
-      generateButtonIdle: "Gerar QR Code",
-      generateButtonLoading: "Gerando...",
-      downloadButton: "Baixar PNG",
-      previewBadge: "preview",
-      cameraTip: "Dica: use URL completa com https:// para melhorar a leitura em aplicativos de câmera.",
-      footerText: "Made with luv by @yurirxmos · updated by @almeidaoffsec",
-      footerBrandDescription: "Gerador de QR Code gratuito com logo, frame e histórico local. Mantido por @almeidaoffsec.",
-      footerNavLabel: "Navegação",
-      footerNavTop: "Início",
-      footerNavManual: "Manual",
-      footerNavHistory: "Histórico",
-      footerNavSource: "Código-fonte",
-      footerSocialLabel: "Redes",
-      footerStatus: "gerador online",
-      qrColorDarkLabel: "Cor do QR",
-      qrColorLightLabel: "Cor do fundo",
-      historyPreview: "Preview",
-      historyButton: "Histórico",
-      historyModalTitle: "Histórico de QR Codes",
-      historyEmpty: "Nenhum QR Code gerado ainda.",
-      historyClearButton: "Limpar",
-      historyDownload: "Baixar",
-      historyDelete: "Excluir",
-      historyCloseButton: "Fechar",
-      historyExportButton: "Exportar JSON",
-      historyImportButton: "Importar JSON",
-      historyImportSuccess: "Importado com sucesso.",
-      historyImportError: "Arquivo inválido.",
-      historyClone: "Clonar",
-      cloneNotAvailable: "Este QR não tem dados suficientes para clonar.",
-      qrNameLabel: "Nome (opcional)",
-      qrNamePlaceholder: "Ex: Cardápio do restaurante",
-      frameLabel: "Adicionar frame",
-      frameTextLabel: "Texto do frame",
-      frameTextPlaceholder: "exemplo",
-      frameColorLabel: "Cor do frame",
-      frameTextColorLabel: "Cor do texto",
-      typeLabel: "Tipo",
-      typeLink: "Link",
-      typeText: "Texto",
-      typeEmail: "E-mail",
-      typeCall: "Chamada",
-      fieldUrl: "URL",
-      fieldText: "Texto",
-      fieldEmailTo: "E-mail",
-      fieldSubject: "Assunto",
-      fieldMessage: "Mensagem",
-      fieldPhone: "Número",
-      fieldFirstName: "Nome",
-      fieldLastName: "Sobrenome",
-      fieldOrg: "Empresa",
-      fieldJobTitle: "Cargo",
-      fieldWebsite: "Site",
-      fieldStreet: "Rua",
-      fieldCity: "Cidade",
-      fieldZip: "CEP",
-      fieldCountry: "País",
-      fieldSsid: "Nome da rede",
-      fieldEncryption: "Criptografia",
-      fieldPassword: "Senha",
-      fieldHidden: "Rede oculta",
-      encryptionNone: "Sem criptografia",
-      fieldCountryCode: "País (DDI)",
-      countryCodePlaceholder: "Selecione o país...",
-      placeholderUrl: "https://seusite.com",
-      placeholderText: "Seu texto aqui...",
-      placeholderEmailTo: "email@exemplo.com",
-      placeholderSubject: "Assunto",
-      placeholderMessage: "Sua mensagem...",
-      placeholderCountryCode: "+55",
-      placeholderPhone: "11999999999",
-      placeholderFirstName: "João",
-      placeholderLastName: "Silva",
-      placeholderVcardPhone: "+55 11 99999-9999",
-      placeholderOrg: "Empresa Ltda.",
-      placeholderJobTitle: "CEO",
-      placeholderWebsite: "https://empresa.com",
-      placeholderStreet: "Rua Exemplo, 123",
-      placeholderCity: "São Paulo",
-      placeholderZip: "01310-100",
-      placeholderCountry: "BR",
-      placeholderSsid: "MinhaRede",
-      placeholderPassword: "Senha",
-      presetLogosTitle: "Logos disponíveis",
-      presetLogosButton: "Escolher logo",
-      manualTitle: "Manual de uso",
-      manualButtonTitle: "Manual",
-    },
-    status: {
-      initial: "Preencha os campos e clique em Gerar QR Code.",
-      dirty: "Altere os campos e gere novamente para baixar.",
-      emptyContent: "Preencha o campo obrigatório para gerar o QR Code.",
-      generating: "Gerando QR Code...",
-      generatedSuccess: "QR Code gerado com sucesso.",
-      generateBeforeDownload: "Gere o QR Code antes de baixar.",
-      exportFailed: "Não foi possível exportar a imagem.",
-      downloadStarted: "Download iniciado.",
-      invalidImageFile: "Selecione um arquivo de imagem válido.",
-      imageFormatUnsupported: "Formato da imagem não suportado.",
-      imageReadFailed: "Falha ao ler a imagem.",
-      logoLoadFailed: "Não foi possível carregar a logo.",
-      canvasContextFailed: "Falha ao abrir o contexto do canvas.",
-      invalidQrEngine: "Motor de QR Code inválido.",
-      qrRenderFailed: "Falha ao gerar o QR Code.",
-      qrLibraryUnavailable: "Não foi possível carregar o motor de QR Code. Verifique a conexão e recarregue a página.",
-    },
-    manual: {
-      s1title: "Tipos de QR Code",
-      s1body: "Escolha entre Link, Texto, E-mail, Chamada, WhatsApp, V-Card e Wi-Fi. Cada tipo formata automaticamente o conteúdo — basta preencher os campos exibidos.",
-      s2title: "Logo",
-      s2body: "Suba uma imagem do seu dispositivo ou clique em 'Escolher logo' para selecionar uma marca conhecida. Use os controles de tamanho e margem para ajustar o posicionamento.",
-      s3title: "Cores",
-      s3body: "Personalize a cor dos módulos do QR e do fundo. Para garantir a leitura por qualquer câmera, mantenha alto contraste entre as duas cores.",
-      s4title: "Frame",
-      s4body: "Ative 'Adicionar frame' para incluir uma moldura ao redor do QR com texto personalizado. Escolha as cores do frame e do texto para combinar com sua identidade visual.",
-      s5title: "Gerar e Baixar",
-      s5body: "Preencha os campos e clique em 'Gerar QR Code'. Após a geração, clique em 'Baixar PNG' para salvar a imagem em alta resolução (512 × 512 px).",
-      s6title: "Nome do QR",
-      s6body: "Adicione um nome para identificar facilmente o QR no histórico. Se deixado em branco, o conteúdo gerado é exibido no lugar.",
-      s7title: "Histórico",
-      s7body: "Cada QR gerado é salvo automaticamente no navegador. Você pode visualizar, clonar (restaurar configurações no painel de edição), baixar ou excluir entradas individualmente.",
-      s8title: "Exportar e Importar",
-      s8body: "No histórico, exporte os dados como arquivo JSON para backup ou para transferir para outro dispositivo. Importe um arquivo exportado anteriormente para restaurar o histórico.",
-    },
-  },
-  "en-US": {
-    ui: {
-      badge: "studio edition · no sign-up",
-      heroLabel: "Tool",
-      heroGithub: "View on GitHub",
-      heroTitle: "Create a QR Code with a strong visual identity.",
-      heroDescription:
-        "Type your content, place your brand at the center, and export a production-ready PNG for print, menus, packaging, or campaigns.",
-      languageLabel: "Language",
-      creativeDirectionLabel: "creative direction",
-      creativeDirectionTitle: "Editorial print with poster-level contrast.",
-      creativeDirectionDescription: "Expressive typography, bold borders, and a textured-paper atmosphere.",
-      panelBadge: "panel",
-      contentLabel: "Content",
-      contentPlaceholder: "https://yourwebsite.com",
-      logoLabel: "Optional logo",
-      logoFileDefault: "No logo selected.",
-      logoSizeLabel: "Logo size",
-      logoScaleSuffix: "% of QR",
-      logoPaddingLabel: "White padding",
-      logoPaddingSuffix: "% of QR",
-      generateButtonIdle: "Generate QR Code",
-      generateButtonLoading: "Generating...",
-      downloadButton: "Download PNG",
-      previewBadge: "preview",
-      cameraTip: "Tip: use a full URL with https:// to improve scanning on camera apps.",
-      footerText: "Made with luv by @yurirxmos · updated by @almeidaoffsec",
-      footerBrandDescription: "Free QR Code generator with logo, frame, and local history. Maintained by @almeidaoffsec.",
-      footerNavLabel: "Navigation",
-      footerNavTop: "Home",
-      footerNavManual: "Manual",
-      footerNavHistory: "History",
-      footerNavSource: "Source code",
-      footerSocialLabel: "Social",
-      footerStatus: "generator online",
-      qrColorDarkLabel: "QR color",
-      qrColorLightLabel: "Background color",
-      historyPreview: "Preview",
-      historyButton: "History",
-      historyModalTitle: "QR Code History",
-      historyEmpty: "No QR Codes generated yet.",
-      historyClearButton: "Clear",
-      historyDownload: "Download",
-      historyDelete: "Delete",
-      historyCloseButton: "Close",
-      historyExportButton: "Export JSON",
-      historyImportButton: "Import JSON",
-      historyImportSuccess: "Imported successfully.",
-      historyImportError: "Invalid file.",
-      historyClone: "Clone",
-      cloneNotAvailable: "This QR doesn't have enough data to clone.",
-      qrNameLabel: "Name (optional)",
-      qrNamePlaceholder: "e.g.: Restaurant menu",
-      frameLabel: "Add frame",
-      frameTextLabel: "Frame text",
-      frameTextPlaceholder: "example",
-      frameColorLabel: "Frame color",
-      frameTextColorLabel: "Text color",
-      typeLabel: "Type",
-      typeLink: "Link",
-      typeText: "Text",
-      typeEmail: "Email",
-      typeCall: "Call",
-      fieldUrl: "URL",
-      fieldText: "Text",
-      fieldEmailTo: "Email",
-      fieldSubject: "Subject",
-      fieldMessage: "Message",
-      fieldPhone: "Number",
-      fieldFirstName: "First name",
-      fieldLastName: "Last name",
-      fieldOrg: "Organization",
-      fieldJobTitle: "Job title",
-      fieldWebsite: "Website",
-      fieldStreet: "Street",
-      fieldCity: "City",
-      fieldZip: "ZIP",
-      fieldCountry: "Country",
-      fieldSsid: "Network name",
-      fieldEncryption: "Encryption",
-      fieldPassword: "Password",
-      fieldHidden: "Hidden network",
-      encryptionNone: "No encryption",
-      fieldCountryCode: "Country (Code)",
-      countryCodePlaceholder: "Select country...",
-      placeholderUrl: "https://yourwebsite.com",
-      placeholderText: "Your text here...",
-      placeholderEmailTo: "email@example.com",
-      placeholderSubject: "Subject",
-      placeholderMessage: "Your message...",
-      placeholderCountryCode: "+1",
-      placeholderPhone: "5551234567",
-      placeholderFirstName: "John",
-      placeholderLastName: "Smith",
-      placeholderVcardPhone: "+1 555 123-4567",
-      placeholderOrg: "Company Inc.",
-      placeholderJobTitle: "CEO",
-      placeholderWebsite: "https://company.com",
-      placeholderStreet: "123 Example St",
-      placeholderCity: "New York",
-      placeholderZip: "10001",
-      placeholderCountry: "US",
-      placeholderSsid: "MyNetwork",
-      placeholderPassword: "Password",
-      presetLogosTitle: "Available logos",
-      presetLogosButton: "Choose logo",
-      manualTitle: "How to use",
-      manualButtonTitle: "Help",
-    },
-    status: {
-      initial: "Fill in the fields and click Generate QR Code.",
-      dirty: "Fields changed. Generate again before downloading.",
-      emptyContent: "Fill in the required field to generate the QR Code.",
-      generating: "Generating QR Code...",
-      generatedSuccess: "QR Code generated successfully.",
-      generateBeforeDownload: "Generate the QR Code before downloading.",
-      exportFailed: "Could not export the image.",
-      downloadStarted: "Download started.",
-      invalidImageFile: "Please select a valid image file.",
-      imageFormatUnsupported: "Unsupported image format.",
-      imageReadFailed: "Failed to read the image.",
-      logoLoadFailed: "Could not load the logo.",
-      canvasContextFailed: "Could not access the canvas context.",
-      invalidQrEngine: "Invalid QR Code engine.",
-      qrRenderFailed: "Failed to generate the QR Code.",
-      qrLibraryUnavailable: "Could not load the QR Code engine. Check your connection and reload the page.",
-    },
-    manual: {
-      s1title: "QR Code Types",
-      s1body: "Choose from Link, Text, Email, Call, WhatsApp, VCard, and Wi-Fi. Each type automatically formats the content — just fill in the displayed fields.",
-      s2title: "Logo",
-      s2body: "Upload an image from your device or click 'Choose logo' to pick a well-known brand. Use the size and padding sliders to adjust the positioning.",
-      s3title: "Colors",
-      s3body: "Customize the QR module color and the background color. For reliable scanning on any camera, maintain high contrast between both colors.",
-      s4title: "Frame",
-      s4body: "Enable 'Add frame' to wrap the QR with a decorative border and custom text. Choose frame and text colors to match your brand identity.",
-      s5title: "Generate & Download",
-      s5body: "Fill in the fields and click 'Generate QR Code'. Once generated, click 'Download PNG' to save the high-resolution image (512 × 512 px).",
-      s6title: "QR Name",
-      s6body: "Add a name to easily identify the QR in history. If left blank, the generated content is displayed instead.",
-      s7title: "History",
-      s7body: "Every generated QR is automatically saved in the browser. You can preview, clone (restore settings to the edit panel), download, or delete individual entries.",
-      s8title: "Export & Import",
-      s8body: "In history, export data as a JSON file for backup or cross-device transfer. Import a previously exported file to restore your history.",
-    },
-  },
-};
-
-const SEO_TRANSLATIONS = {
-  "pt-BR": {
-    title: "Free QRCode Generator | Gerador de QR Code Gratis com Logo",
-    description:
-      "Crie QR Code gratis online com logo central, ajuste de tamanho e download em PNG. Free QRCode Generator pronto para uso em campanhas, embalagens e cardapios.",
-    ogDescription: "Crie QR Code gratis online com logo central, ajuste de tamanho e download em PNG.",
-    twitterDescription: "Crie QR Code gratis online com logo central, ajuste de tamanho e download em PNG.",
-    ogImageAlt: "Preview do Free QRCode Generator",
-    ogLocale: "pt_BR",
-  },
-  "en-US": {
-    title: "Free QRCode Generator | Free QR Code Generator with Logo",
-    description:
-      "Create a free QR Code online with an optional center logo, sizing controls, and PNG export. Ready-to-use Free QRCode Generator for campaigns, packaging, and menus.",
-    ogDescription: "Create free QR Codes online with optional center logo and PNG export.",
-    twitterDescription: "Create free QR Codes online with optional center logo and PNG export.",
-    ogImageAlt: "Free QRCode Generator preview",
-    ogLocale: "en_US",
-  },
-};
-
 const CONTROL_LIST = [logoInput, logoScale, logoPadding].filter((element) => Boolean(element));
 const QR_CODE_SCRIPT_SOURCES = [
   "./qrcode.min.js",
@@ -509,7 +191,6 @@ const state = {
   hasGenerated: false,
   isGenerating: false,
   logoDataUrl: null,
-  currentLanguage: DEFAULT_LANGUAGE,
   lastStatusKey: "initial",
   lastStatusType: "info",
   history: loadHistory(),
@@ -517,93 +198,6 @@ const state = {
 };
 
 let qrCodeLibraryPromise = null;
-
-const getSeoPack = (language) => SEO_TRANSLATIONS[language] || SEO_TRANSLATIONS[DEFAULT_LANGUAGE];
-
-const setMetaTagContent = (selector, content) => {
-  const element = document.querySelector(selector);
-  if (!element) {
-    return;
-  }
-
-  element.setAttribute("content", content);
-};
-
-const setLinkHref = (selector, href) => {
-  const element = document.querySelector(selector);
-  if (!element) {
-    return;
-  }
-
-  element.setAttribute("href", href);
-};
-
-const buildLanguageUrl = (language) => {
-  const url = new URL(APP_BASE_URL);
-
-  if (language === "en-US") {
-    url.searchParams.set(LANGUAGE_QUERY_PARAM, "en-US");
-  }
-
-  return url.toString();
-};
-
-const getLanguageFromUrl = () => {
-  try {
-    const url = new URL(window.location.href);
-    const languageParam = url.searchParams.get(LANGUAGE_QUERY_PARAM);
-
-    if (languageParam && TRANSLATIONS[languageParam]) {
-      return languageParam;
-    }
-  } catch (_error) {}
-
-  return null;
-};
-
-const updateLanguageInUrl = (language) => {
-  try {
-    const url = new URL(window.location.href);
-
-    if (language === DEFAULT_LANGUAGE) {
-      url.searchParams.delete(LANGUAGE_QUERY_PARAM);
-    } else {
-      url.searchParams.set(LANGUAGE_QUERY_PARAM, language);
-    }
-
-    const nextUrl = `${url.pathname}${url.search}${url.hash}`;
-    window.history.replaceState({}, "", nextUrl);
-  } catch (_error) {}
-};
-
-const applySeoMetadata = (language) => {
-  const seo = getSeoPack(language);
-  const localizedUrl = buildLanguageUrl(language);
-
-  document.title = seo.title;
-
-  setMetaTagContent('meta[name="description"]', seo.description);
-  setMetaTagContent('meta[property="og:title"]', seo.title);
-  setMetaTagContent('meta[property="og:description"]', seo.ogDescription);
-  setMetaTagContent('meta[property="og:url"]', localizedUrl);
-  setMetaTagContent('meta[property="og:locale"]', seo.ogLocale);
-  setMetaTagContent('meta[property="og:image:alt"]', seo.ogImageAlt);
-  setMetaTagContent('meta[name="twitter:title"]', seo.title);
-  setMetaTagContent('meta[name="twitter:description"]', seo.twitterDescription);
-
-  setLinkHref('link[rel="canonical"]', localizedUrl);
-  setLinkHref('link[rel="alternate"][hreflang="pt-BR"]', buildLanguageUrl("pt-BR"));
-  setLinkHref('link[rel="alternate"][hreflang="en-US"]', buildLanguageUrl("en-US"));
-  setLinkHref('link[rel="alternate"][hreflang="x-default"]', buildLanguageUrl("pt-BR"));
-};
-
-const getLanguagePack = (language) => TRANSLATIONS[language] || TRANSLATIONS[DEFAULT_LANGUAGE];
-
-const t = (section, key) => {
-  const currentPack = getLanguagePack(state.currentLanguage);
-  const defaultPack = getLanguagePack(DEFAULT_LANGUAGE);
-  return currentPack[section]?.[key] || defaultPack[section]?.[key] || "";
-};
 
 const createI18nError = (statusKey) => new Error(`i18n:${statusKey}`);
 
@@ -621,7 +215,7 @@ const getStatusKeyFromError = (error, fallbackKey) => {
 
 const renderStatus = () => {
   const styleClass = STATUS_STYLE_MAP[state.lastStatusType] || STATUS_STYLE_MAP.info;
-  statusMessage.textContent = t("status", state.lastStatusKey);
+  statusMessage.textContent = tr("status." + state.lastStatusKey);
   statusMessage.className = `min-h-12 rounded-lg px-3 py-2 text-sm font-medium transition ${styleClass}`;
 };
 
@@ -636,97 +230,13 @@ const updateGenerateButtonLabel = () => {
     return;
   }
 
-  const labelKey = state.isGenerating ? "generateButtonLoading" : "generateButtonIdle";
-  generateButtonLabel.textContent = t("ui", labelKey);
+  generateButtonLabel.textContent = tr(state.isGenerating ? "generateButtonLoading" : "generateButtonIdle");
 };
 
 const updateLogoFileNameText = () => {
   if (!logoInput.files || logoInput.files.length === 0) {
-    logoFileName.textContent = t("ui", "logoFileDefault");
+    logoFileName.textContent = tr("logoFileDefault");
   }
-};
-
-const applyLanguage = (language) => {
-  const normalizedLanguage = TRANSLATIONS[language] ? language : DEFAULT_LANGUAGE;
-  state.currentLanguage = normalizedLanguage;
-
-  document.documentElement.lang = normalizedLanguage;
-
-  languageButtons.forEach((button) => {
-    if (!(button instanceof HTMLButtonElement)) {
-      return;
-    }
-
-    const isActive = button.dataset.languageButton === normalizedLanguage;
-    button.setAttribute("aria-pressed", isActive ? "true" : "false");
-    button.classList.toggle("lang-btn-active", isActive);
-  });
-
-  document.querySelectorAll("[data-i18n]").forEach((element) => {
-    const key = element.dataset.i18n;
-    if (!key) {
-      return;
-    }
-
-    element.textContent = t("ui", key);
-  });
-
-  document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
-    const key = element.dataset.i18nPlaceholder;
-    if (!key || !(element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement)) {
-      return;
-    }
-
-    element.placeholder = t("ui", key);
-  });
-
-  document.querySelectorAll("[data-i18n-title]").forEach((element) => {
-    const key = element.dataset.i18nTitle;
-    if (!key) return;
-    element.title = t("ui", key);
-    element.setAttribute("aria-label", t("ui", key));
-  });
-
-  if (logoScaleSuffix) {
-    logoScaleSuffix.textContent = t("ui", "logoScaleSuffix");
-  }
-
-  if (logoPaddingSuffix) {
-    logoPaddingSuffix.textContent = t("ui", "logoPaddingSuffix");
-  }
-
-  updateGenerateButtonLabel();
-  updateLogoFileNameText();
-  renderStatus();
-  applySeoMetadata(normalizedLanguage);
-  updateLanguageInUrl(normalizedLanguage);
-
-  try {
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, normalizedLanguage);
-  } catch (_error) {}
-
-  renderHistoryList();
-  if (manualModal && !manualModal.classList.contains("hidden")) renderManualContent();
-};
-
-const getInitialLanguage = () => {
-  const languageFromUrl = getLanguageFromUrl();
-  if (languageFromUrl) {
-    return languageFromUrl;
-  }
-
-  try {
-    const persistedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-    if (persistedLanguage && TRANSLATIONS[persistedLanguage]) {
-      return persistedLanguage;
-    }
-  } catch (_error) {}
-
-  if (navigator.language.toLowerCase().startsWith("en")) {
-    return "en-US";
-  }
-
-  return DEFAULT_LANGUAGE;
 };
 
 const setGeneratingState = (isGenerating) => {
@@ -1114,7 +624,7 @@ const drawFrame = (canvas, text, frameColor, textColor) => {
 
 const getTypeLabel = (type) => {
   const key = `type${type.charAt(0).toUpperCase()}${type.slice(1)}`;
-  return t("ui", key) || type;
+  return tr(key) || type;
 };
 
 const getFieldValue = (id) => document.getElementById(id)?.value?.trim() ?? "";
@@ -1303,7 +813,7 @@ const generateQrCode = async () => {
   }
 };
 
-const getDownloadFileName = () => (state.currentLanguage === "en-US" ? "qrcode-with-logo.png" : "qrcode-com-logo.png");
+const getDownloadFileName = () => (currentLangCode === "en-US" ? "qrcode-with-logo.png" : "qrcode-com-logo.png");
 
 const downloadQrCode = () => {
   if (!state.hasGenerated) {
@@ -1333,7 +843,7 @@ const handleLogoChange = async () => {
 
   if (!file) {
     state.logoDataUrl = null;
-    logoFileName.textContent = t("ui", "logoFileDefault");
+    logoFileName.textContent = tr("logoFileDefault");
     setDirtyState();
     return;
   }
@@ -1341,7 +851,7 @@ const handleLogoChange = async () => {
   if (!file.type.startsWith("image/")) {
     state.logoDataUrl = null;
     logoInput.value = "";
-    logoFileName.textContent = t("ui", "logoFileDefault");
+    logoFileName.textContent = tr("logoFileDefault");
     setStatus("invalidImageFile", "error");
     setDirtyState();
     return;
@@ -1410,7 +920,7 @@ const deleteHistoryItem = (id) => {
 };
 
 const getHistoryExportFileName = () =>
-  state.currentLanguage === "en-US" ? "qrcode-history.json" : "historico-qrcode.json";
+  currentLangCode === "en-US" ? "qrcode-history.json" : "historico-qrcode.json";
 
 const exportHistory = () => {
   const blob = new Blob([JSON.stringify(state.history, null, 2)], { type: "application/json" });
@@ -1428,7 +938,7 @@ const showHistoryModalStatus = (messageKey, isError = false) => {
   if (!historyModalStatus) {
     return;
   }
-  historyModalStatus.textContent = t("ui", messageKey);
+  historyModalStatus.textContent = tr(messageKey);
   historyModalStatus.className = `text-xs ${isError ? "text-[#FF4D6D]" : "text-[#39D353]"}`;
   clearTimeout(historyStatusTimer);
   historyStatusTimer = window.setTimeout(() => {
@@ -1478,7 +988,7 @@ const renderHistoryList = () => {
 
   if (state.history.length === 0) {
     const emptyEl = document.createElement("p");
-    emptyEl.textContent = t("ui", "historyEmpty");
+    emptyEl.textContent = tr("historyEmpty");
     emptyEl.className = "py-8 text-center text-sm text-[#4A5568]";
     historyList.append(emptyEl);
     return;
@@ -1505,7 +1015,7 @@ const renderHistoryList = () => {
     contentWrapper.append(typeBadge, contentEl);
 
     const previewBtn = document.createElement("button");
-    previewBtn.textContent = t("ui", "historyPreview");
+    previewBtn.textContent = tr("historyPreview");
     previewBtn.type = "button";
     previewBtn.className = "history-btn";
 
@@ -1522,19 +1032,19 @@ const renderHistoryList = () => {
     });
 
     const downloadBtn = document.createElement("button");
-    downloadBtn.textContent = t("ui", "historyDownload");
+    downloadBtn.textContent = tr("historyDownload");
     downloadBtn.type = "button";
     downloadBtn.className = "history-btn";
     downloadBtn.addEventListener("click", () => downloadHistoryItem(entry.dataUrl, entry.fileName));
 
     const cloneBtn = document.createElement("button");
-    cloneBtn.textContent = t("ui", "historyClone");
+    cloneBtn.textContent = tr("historyClone");
     cloneBtn.type = "button";
     cloneBtn.className = "history-btn";
     cloneBtn.addEventListener("click", () => restoreFromSnapshot(entry.snapshot));
 
     const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = t("ui", "historyDelete");
+    deleteBtn.textContent = tr("historyDelete");
     deleteBtn.type = "button";
     deleteBtn.className = "history-delete-btn";
     deleteBtn.addEventListener("click", () => deleteHistoryItem(entry.id));
@@ -1567,11 +1077,11 @@ const renderManualContent = () => {
     section.className = "manual-section";
 
     const h3 = document.createElement("h3");
-    h3.textContent = t("manual", titleKey);
+    h3.textContent = tr("manual." + titleKey);
     h3.className = "mb-1 text-sm font-semibold text-[#EAECF0]";
 
     const p = document.createElement("p");
-    p.textContent = t("manual", bodyKey);
+    p.textContent = tr("manual." + bodyKey);
     p.className = "text-sm leading-relaxed text-[#8A96A8]";
 
     section.append(h3, p);
@@ -1656,25 +1166,75 @@ const renderPresetLogosList = () => {
   list.append(grid);
 };
 
+const populateCountryCodeSelects = () => {
+  const ids = ["qrField-call-code", "qrField-whatsapp-code", "qrField-vcard-phone-code"];
+  const placeholder = tr("countryCodePlaceholder");
+
+  ids.forEach((id) => {
+    const select = document.getElementById(id);
+    if (!select) return;
+
+    const prev = select.value;
+    select.innerHTML = "";
+
+    const ph = document.createElement("option");
+    ph.value = "";
+    ph.textContent = placeholder;
+    ph.disabled = true;
+    select.append(ph);
+
+    COUNTRY_CODES.forEach(([name, code]) => {
+      const opt = document.createElement("option");
+      opt.value = code;
+      opt.textContent = `${name} (+${code})`;
+      select.append(opt);
+    });
+
+    select.value = prev && select.querySelector(`option[value="${prev}"]`) ? prev : "55";
+  });
+};
+
+const closeHeaderMenu = () => {
+  if (!headerMenuPanel || !headerMenuToggle) {
+    return;
+  }
+  headerMenuPanel.classList.add("hidden");
+  headerMenuToggle.setAttribute("aria-expanded", "false");
+};
+
+document.addEventListener("i18n:ready", function (e) {
+  i18nDict = e.detail.dict;
+  currentLangCode = e.detail.lang === "en" ? "en-US" : "pt-BR";
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+    const key = el.dataset.i18nPlaceholder;
+    if (key && i18nDict[key] !== undefined) {
+      el.placeholder = i18nDict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-title]").forEach(function (el) {
+    const key = el.dataset.i18nTitle;
+    if (!key) return;
+    const val = i18nDict[key] || key;
+    el.title = val;
+    el.setAttribute("aria-label", val);
+  });
+
+  updateGenerateButtonLabel();
+  updateLogoFileNameText();
+  renderStatus();
+  populateCountryCodeSelects();
+  renderHistoryList();
+
+  if (manualModal && !manualModal.classList.contains("hidden")) {
+    renderManualContent();
+  }
+});
+
 generateButton.addEventListener("click", generateQrCode);
 downloadButton.addEventListener("click", downloadQrCode);
 logoInput.addEventListener("change", handleLogoChange);
-
-languageButtons.forEach((button) => {
-  if (!(button instanceof HTMLButtonElement)) {
-    return;
-  }
-
-  button.addEventListener("click", () => {
-    const selectedLanguage = button.dataset.languageButton;
-    if (!selectedLanguage) {
-      return;
-    }
-
-    applyLanguage(selectedLanguage);
-    closeHeaderMenu();
-  });
-});
 
 logoScale.addEventListener("input", () => {
   logoScaleValue.textContent = logoScale.value;
@@ -1788,42 +1348,6 @@ if (wifiEncryptionEl && wifiPasswordGroup) {
   });
 }
 
-const populateCountryCodeSelects = () => {
-  const ids = ["qrField-call-code", "qrField-whatsapp-code", "qrField-vcard-phone-code"];
-  const placeholder = t("ui", "countryCodePlaceholder");
-
-  ids.forEach((id) => {
-    const select = document.getElementById(id);
-    if (!select) return;
-
-    const prev = select.value;
-    select.innerHTML = "";
-
-    const ph = document.createElement("option");
-    ph.value = "";
-    ph.textContent = placeholder;
-    ph.disabled = true;
-    select.append(ph);
-
-    COUNTRY_CODES.forEach(([name, code]) => {
-      const opt = document.createElement("option");
-      opt.value = code;
-      opt.textContent = `${name} (+${code})`;
-      select.append(opt);
-    });
-
-    select.value = prev && select.querySelector(`option[value="${prev}"]`) ? prev : "55";
-  });
-};
-
-const closeHeaderMenu = () => {
-  if (!headerMenuPanel || !headerMenuToggle) {
-    return;
-  }
-  headerMenuPanel.classList.add("hidden");
-  headerMenuToggle.setAttribute("aria-expanded", "false");
-};
-
 if (headerMenuToggle && headerMenuPanel) {
   headerMenuToggle.addEventListener("click", (event) => {
     event.stopPropagation();
@@ -1887,6 +1411,4 @@ if (presetLogosModal) {
   });
 }
 
-applyLanguage(getInitialLanguage());
-populateCountryCodeSelects();
 setQrType(state.qrType);
